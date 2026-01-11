@@ -1,0 +1,26 @@
+{
+  "name": "@ToiletAdvisor/api",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@ToiletAdvisor/db": "workspace:*",
+    "@ToiletAdvisor/env": "workspace:*",
+    "@trpc/client": "catalog:",
+    "@trpc/server": "catalog:",
+    "dotenv": "catalog:",
+    "drizzle-orm": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@ToiletAdvisor/config": "workspace:*",
+    "typescript": "^5"
+  }
+}

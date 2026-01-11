@@ -1,0 +1,3 @@
+{
+  "extends": "@ToiletAdvisor/config/tsconfig.base.json"
+}
