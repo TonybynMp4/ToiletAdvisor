@@ -1,10 +1,12 @@
 import { publicProcedure, router } from "../index";
-import { todoRouter } from "./todo";
+import { postRouter } from "./post";
+import { userRouter } from "./user";
 
 export const appRouter = router({
-  healthCheck: publicProcedure.query(() => {
-    return "OK";
-  }),
-  todo: todoRouter,
+	healthCheck: publicProcedure.query(() => {
+		return "OK";
+	}),
+	post: postRouter,
+	user: userRouter,
 });
-export type AppRouter = typeof appRouter;
+export type ApiRouter = typeof appRouter;

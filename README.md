@@ -1,4 +1,4 @@
-# ToiletAdvisor
+# toiletadvisor
 
 This project was created with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), a modern TypeScript stack that combines React, React Router, Hono, TRPC, and more.
 
@@ -52,7 +52,7 @@ The API is running at [http://localhost:3000](http://localhost:3000).
 ## Project Structure
 
 ```
-ToiletAdvisor/
+toiletadvisor/
 ├── apps/
 │   ├── web/         # Frontend application (React + React Router)
 │   └── server/      # Backend API (Hono, TRPC)

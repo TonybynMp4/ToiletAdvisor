@@ -1,0 +1,27 @@
+{
+	"name": "@toiletadvisor/auth",
+	"type": "module",
+	"exports": {
+		".": {
+			"default": "./src/index.ts"
+		},
+		"./*": {
+			"default": "./src/*.ts"
+		}
+	},
+	"scripts": {},
+	"dependencies": {
+		"@toiletadvisor/db": "workspace:*",
+		"@toiletadvisor/env": "workspace:*",
+		"@trpc/client": "catalog:",
+		"@trpc/server": "catalog:",
+		"dotenv": "catalog:",
+		"drizzle-orm": "catalog:",
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@toiletadvisor/config": "workspace:*",
+		"hono": "catalog:",
+		"typescript": "^5"
+	}
+}

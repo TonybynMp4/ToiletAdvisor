@@ -1,12 +1,12 @@
-name: ToiletAdvisor
+name: toiletadvisor
 
 services:
   mysql:
     image: mysql
-    container_name: ToiletAdvisor-mysql
+    container_name: toiletadvisor-mysql
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: ToiletAdvisor
+      MYSQL_DATABASE: toiletadvisor
       MYSQL_USER: user
       MYSQL_PASSWORD: password
     ports:

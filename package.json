@@ -1,39 +1,39 @@
 {
-  "name": "ToiletAdvisor",
-  "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
-  "type": "module",
-  "scripts": {
-    "dev": "pnpm -r dev",
-    "build": "pnpm -r build",
-    "check-types": "pnpm -r check-types",
-    "dev:native": "pnpm --filter native dev",
-    "dev:web": "pnpm --filter web dev",
-    "dev:server": "pnpm --filter server dev",
-    "db:push": "pnpm --filter @ToiletAdvisor/db db:push",
-    "db:studio": "pnpm --filter @ToiletAdvisor/db db:studio",
-    "db:generate": "pnpm --filter @ToiletAdvisor/db db:generate",
-    "db:migrate": "pnpm --filter @ToiletAdvisor/db db:migrate",
-    "db:start": "pnpm --filter @ToiletAdvisor/db db:start",
-    "db:watch": "pnpm --filter @ToiletAdvisor/db db:watch",
-    "db:stop": "pnpm --filter @ToiletAdvisor/db db:stop",
-    "db:down": "pnpm --filter @ToiletAdvisor/db db:down",
-    "check": "oxlint && oxfmt --write"
-  },
-  "dependencies": {
-    "@ToiletAdvisor/env": "workspace:*",
-    "dotenv": "catalog:",
-    "zod": "catalog:"
-  },
-  "devDependencies": {
-    "@ToiletAdvisor/config": "workspace:*",
-    "@types/node": "^22.13.14",
-    "oxfmt": "^0.19.0",
-    "oxlint": "^1.34.0",
-    "typescript": "^5"
-  },
-  "packageManager": "pnpm@10.25.0"
+	"name": "toiletadvisor",
+	"private": true,
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	],
+	"type": "module",
+	"scripts": {
+		"dev": "pnpm -r dev",
+		"build": "pnpm -r build",
+		"dev:web": "pnpm --filter web dev",
+		"dev:api": "pnpm --filter api-server dev",
+		"dev:auth": "pnpm --filter auth-server dev",
+		"db:push": "pnpm --filter @toiletadvisor/db db:push",
+		"db:studio": "pnpm --filter @toiletadvisor/db db:studio",
+		"db:generate": "pnpm --filter @toiletadvisor/db db:generate",
+		"db:migrate": "pnpm --filter @toiletadvisor/db db:migrate",
+		"db:start": "pnpm --filter @toiletadvisor/db db:start",
+		"db:watch": "pnpm --filter @toiletadvisor/db db:watch",
+		"db:stop": "pnpm --filter @toiletadvisor/db db:stop",
+		"db:down": "pnpm --filter @toiletadvisor/db db:down",
+		"typecheck": "pnpm -r check-types",
+		"check": "oxlint && oxfmt --write"
+	},
+	"dependencies": {
+		"@toiletadvisor/env": "workspace:*",
+		"dotenv": "catalog:",
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@toiletadvisor/config": "workspace:*",
+		"@types/node": "^22.13.14",
+		"oxfmt": "^0.19.0",
+		"oxlint": "^1.34.0",
+		"typescript": "^5"
+	},
+	"packageManager": "pnpm@10.25.0"
 }

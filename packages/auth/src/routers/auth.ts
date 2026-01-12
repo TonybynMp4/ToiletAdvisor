@@ -1,0 +1,15 @@
+import { db } from "@toiletadvisor/db";
+import { eq } from "drizzle-orm";
+import z from "zod";
+
+import { user } from "@toiletadvisor/db/schema/index";
+import { publicProcedure, router } from "../index";
+
+export const authRouter = router({
+	getAll: publicProcedure.query(async () => {
+		return await db.select().from(user);
+	}),
+	getById: publicProcedure.input(z.object({ id: z.string().min(1) })).query(async ({ input }) => {
+		return await db.select().from(user).where(eq(user.id, input.id));
+	}),
+});
