@@ -4,8 +4,10 @@
 	"private": true,
 	"type": "module",
 	"exports": {
-		"./server": "./src/server.ts",
-		"./web": "./src/web.ts"
+		"./api": "./src/server.api.ts",
+		"./auth": "./src/server.auth.ts",
+		"./web": "./src/web.ts",
+		"./db": "./src/db.ts"
 	},
 	"dependencies": {
 		"@t3-oss/env-core": "^0.13.10",

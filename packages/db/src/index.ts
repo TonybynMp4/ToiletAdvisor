@@ -1,6 +1,6 @@
-import { env } from "@toiletadvisor/env/server";
 import { drizzle } from "drizzle-orm/mysql2";
 
+import { env } from "@toiletadvisor/env/db";
 import { createPool, type Pool } from "mysql2/promise";
 import * as schema from "./schema";
 

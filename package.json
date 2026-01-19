@@ -27,7 +27,8 @@
 		"db:stop": "pnpm --filter @toiletadvisor/db db:stop",
 		"db:down": "pnpm --filter @toiletadvisor/db db:down",
 		"typecheck": "pnpm -r check-types",
-		"check": "oxlint && oxfmt --write"
+		"lint": "oxlint && oxfmt --write",
+		"ci:env": "sh ./scripts/copy-env.sh"
 	},
 	"dependencies": {
 		"@toiletadvisor/env": "workspace:*",

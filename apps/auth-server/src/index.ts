@@ -1,7 +1,7 @@
 import { trpcServer } from "@hono/trpc-server";
 import { createContext } from "@toiletadvisor/auth/context";
 import { appRouter } from "@toiletadvisor/auth/routers/index";
-import { env } from "@toiletadvisor/env/server";
+import { env } from "@toiletadvisor/env/auth";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
