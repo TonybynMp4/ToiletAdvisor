@@ -3,6 +3,9 @@
 		"source.organizeImports": "explicit",
 		"source.removeUnusedImports": "explicit"
 	},
+	"editor.defaultFormatter": "oxc.oxc-vscode",
+	"editor.formatOnSave": true,
+	"oxc.fmt.configPath": ".oxfmtrc.json",
 	"typescript.preferences.autoImportSpecifierExcludeRegexes": [
 		"@radix-ui",
 		"radix-ui",
