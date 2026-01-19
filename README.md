@@ -45,6 +45,43 @@ pnpm run dev
 Open [http://localhost:5173](http://localhost:5173) in your browser to see the web application.
 The API is running at [http://localhost:3000](http://localhost:3000).
 
+## Docker (dev + prod + nginx)
+
+### Dev (hot reload depuis ton code local)
+
+Lance tout (mysql + api + auth + web + nginx) :
+
+```bash
+pnpm dev
+```
+
+- Nginx (point d'entrée): http://localhost:8080
+- Web (Vite) est aussi exposé sur: http://localhost:5173
+- API tRPC via nginx: http://localhost:8080/api/trpc
+- Auth tRPC via nginx: http://localhost:8080/auth/trpc
+
+Stop + nettoyage volumes:
+
+```bash
+pnpm dev:down
+```
+
+### Prod
+
+Build + run en arrière-plan:
+
+```bash
+pnpm prod
+```
+
+Entrée nginx: http://localhost
+
+Stop + nettoyage volumes:
+
+```bash
+pnpm prod:down
+```
+
 ## Git Hooks and Formatting
 
 - Format and lint fix: `pnpm run check`

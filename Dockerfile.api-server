@@ -1,0 +1,30 @@
+FROM node:20-alpine AS build
+WORKDIR /app
+RUN corepack enable
+
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
+COPY apps/api-server/package.json apps/api-server/package.json
+COPY packages/api/package.json packages/api/package.json
+COPY packages/db/package.json packages/db/package.json
+COPY packages/env/package.json packages/env/package.json
+COPY packages/config/package.json packages/config/package.json
+
+RUN pnpm install --frozen-lockfile
+
+COPY . .
+
+RUN pnpm --filter api-server build
+
+FROM node:20-alpine
+WORKDIR /app
+ENV NODE_ENV=production
+RUN corepack enable
+
+COPY --from=build /app/package.json /app/pnpm-lock.yaml /app/pnpm-workspace.yaml ./
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/apps/api-server/dist ./apps/api-server/dist
+COPY --from=build /app/apps/api-server/package.json ./apps/api-server/package.json
+COPY --from=build /app/packages ./packages
+
+EXPOSE 3001
+CMD ["node", "apps/api-server/dist/index.js"]
