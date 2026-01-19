@@ -1,3 +1,17 @@
 {
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": "explicit",
+		"source.removeUnusedImports": "explicit"
+	},
+	"typescript.preferences.autoImportSpecifierExcludeRegexes": [
+		"@radix-ui",
+		"radix-ui",
+		"react-day-picker",
+		"^lucide-react/dist/lucide-react.suffixed$",
+		"react-email"
+	],
+	"typescript.preferences.organizeImports": {
+		"typeOrder": "inline"
+	},
 	"typescript.tsdk": "node_modules\\typescript\\lib"
 }
