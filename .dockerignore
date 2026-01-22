@@ -4,14 +4,9 @@ node_modules
 **/build
 **/.react-router
 **/.react-router/**
-**/.turbo
 **/.cache
 **/.vite
 **/.output
-**/.next
 **/*.log
 .git
-.git/**
 .vscode
-.vscode/**
-.DS_Store
