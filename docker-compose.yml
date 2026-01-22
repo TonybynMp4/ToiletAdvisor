@@ -1,0 +1,109 @@
+services:
+  mysql:
+    image: mysql:9
+    container_name: mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_USER: ${DATABASE_USER}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+    ports:
+      - "${DATABASE_PORT:-3306}:3306"
+    volumes:
+      - mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - toiletadvisor-network
+
+  redis:
+    image: redis:8-alpine
+    container_name: redis
+    restart: unless-stopped
+    volumes:
+      - redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - toiletadvisor-network
+
+  api:
+    build:
+      context: ./apps/api-server
+      dockerfile: Dockerfile
+      target: production
+    image: api
+    container_name: api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: 3000
+      DATABASE_URL: ${DATABASE_URL}
+      REDIS_URL: redis://redis:6379
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost}
+      UPLOADTHING_API_KEY: ${UPLOADTHING_API_KEY}
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - toiletadvisor-network
+
+  auth:
+    build:
+      context: ./apps/auth-server
+      dockerfile: Dockerfile
+      target: production
+    image: auth
+    container_name: auth
+    restart: unless-stopped
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: 3000
+      DATABASE_URL: ${DATABASE_URL}
+      REDIS_URL: redis://redis:6379
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost}
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - toiletadvisor-network
+
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+      target: production
+    image: web
+    container_name: web
+    restart: unless-stopped
+    environment:
+      VITE_API_URL: http://api:3000
+      VITE_AUTH_URL: http://auth:3000
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+      - auth
+    networks:
+      - toiletadvisor-network
+
+volumes:
+  mysql:
+    name: mysql
+  redis:
+    name: redis
+
+networks:
+  toiletadvisor-network:
+    driver: bridge

@@ -15,18 +15,11 @@ dist/
 .idea/workspace.xml
 .idea/usage.statistics.xml
 .idea/shelf
-.wrangler
-.alchemy
-/.next/
-.vercel
-prisma/generated/
 
 
 # deps
 node_modules/
 /node_modules
-/.pnp
-.pnp.*
 
 # env
 .env*
