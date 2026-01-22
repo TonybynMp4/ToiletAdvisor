@@ -1,4 +1,10 @@
 services:
+  base:
+    image: monorepo-base
+    build:
+      context: .
+      dockerfile: Dockerfile
+
   mysql:
     image: mysql:9
     container_name: mysql
@@ -36,8 +42,8 @@ services:
 
   api:
     build:
-      context: ./apps/api-server
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./apps/api-server/Dockerfile
       target: production
     image: api
     container_name: api
@@ -49,7 +55,14 @@ services:
       REDIS_URL: redis://redis:6379
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost}
       UPLOADTHING_API_KEY: ${UPLOADTHING_API_KEY}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
     depends_on:
+      base:
+        condition: service_completed_successfully
       mysql:
         condition: service_healthy
       redis:
@@ -59,8 +72,8 @@ services:
 
   auth:
     build:
-      context: ./apps/auth-server
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./apps/auth-server/Dockerfile
       target: production
     image: auth
     container_name: auth
@@ -71,7 +84,14 @@ services:
       DATABASE_URL: ${DATABASE_URL}
       REDIS_URL: redis://redis:6379
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
     depends_on:
+      base:
+        condition: service_completed_successfully
       mysql:
         condition: service_healthy
       redis:
@@ -81,8 +101,8 @@ services:
 
   web:
     build:
-      context: ./apps/web
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./apps/web/Dockerfile
       target: production
     image: web
     container_name: web
@@ -93,8 +113,12 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - api
-      - auth
+      base:
+        condition: service_completed_successfully
+      api:
+        condition: service_healthy
+      auth:
+        condition: service_healthy
     networks:
       - toiletadvisor-network
 

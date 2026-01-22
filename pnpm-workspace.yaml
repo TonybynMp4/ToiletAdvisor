@@ -1,6 +1,10 @@
 packages:
   - apps/*
   - packages/*
+syncInjectedDepsAfterScripts:
+- build
+injectWorkspacePackages: true
+enablePrePostScripts: true
 catalog:
   dotenv: ^17.2.3
   zod: ^4.3.5

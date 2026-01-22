@@ -7,6 +7,7 @@
 	],
 	"type": "module",
 	"scripts": {
+		"predev": "docker build -f Dockerfile -t monorepo-base .",
 		"dev": "docker compose -f docker-compose.dev.yml up --build",
 		"dev:down": "docker compose -f docker-compose.dev.yml down -v",
 		"dev:local": "pnpm -r dev",
@@ -14,6 +15,7 @@
 		"dev:api": "pnpm --filter api-server dev",
 		"dev:auth": "pnpm --filter auth-server dev",
 		"build": "pnpm -r build",
+		"preprod": "docker build -f Dockerfile -t monorepo-base .",
 		"prod": "docker compose up --build -d",
 		"prod:down": "docker compose down -v",
 		"db:push": "pnpm --filter @toiletadvisor/db db:push",

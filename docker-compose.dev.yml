@@ -1,4 +1,11 @@
 services:
+  # lets docker-compose know about the base image so you don't have to build it manually
+  base:
+    image: monorepo-base
+    build:
+      context: .
+      dockerfile: Dockerfile
+
   mysql:
     image: mysql:9
     container_name: mysql
@@ -36,8 +43,8 @@ services:
 
   api:
     build:
-      context: ./apps/api-server
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./apps/api-server/Dockerfile
       target: development
     image: api-dev
     container_name: api
@@ -51,8 +58,16 @@ services:
     ports:
       - 3001:3000
     volumes:
-      - ./apps/api-server:/usr/src/app
+      - ./apps/api-server:/repo/apps/api-server
+      - ./packages:/repo/packages
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
     depends_on:
+      base:
+        condition: service_completed_successfully
       mysql:
         condition: service_healthy
     networks:
@@ -60,8 +75,8 @@ services:
 
   auth:
     build:
-      context: ./apps/auth-server
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./apps/auth-server/Dockerfile
       target: development
     image: auth-dev
     container_name: auth
@@ -75,8 +90,16 @@ services:
     ports:
       - 3002:3000
     volumes:
-      - ./apps/auth-server:/usr/src/app
+      - ./apps/auth-server:/repo/apps/auth-server
+      - ./packages:/repo/packages
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
     depends_on:
+      base:
+        condition: service_completed_successfully
       mysql:
         condition: service_healthy
       redis:
@@ -86,8 +109,8 @@ services:
 
   web:
     build:
-      context: ./apps/web
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./apps/web/Dockerfile
       target: development
     image: web-dev
     container_name: web
@@ -98,10 +121,15 @@ services:
     ports:
       - 5173:5173
     volumes:
-      - ./apps/web:/usr/src/app
+      - ./apps/web:/repo/apps/web
+      - ./packages:/repo/packages
     depends_on:
-      - api
-      - auth
+      base:
+        condition: service_completed_successfully
+      api:
+        condition: service_healthy
+      auth:
+        condition: service_healthy
     networks:
       - toiletadvisor-network
 

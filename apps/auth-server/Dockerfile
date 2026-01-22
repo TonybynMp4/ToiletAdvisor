@@ -1,28 +1,23 @@
-FROM node:25-slim AS base
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
-WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
-EXPOSE 3000
+FROM monorepo-base AS deps
+RUN --mount=type=cache,target=/pnpm/store \
+    pnpm install --filter auth-server... --frozen-lockfile --dev
 
-FROM base AS deps
-# Installer toutes les dépendances
-RUN pnpm install --frozen-lockfile
-
-FROM base AS build
+FROM monorepo-base AS build
 COPY . .
-RUN pnpm run build
+RUN pnpm --filter auth-server... run build
 
-FROM base AS prod-deps
-# Installer les dépendances de production
-RUN pnpm install --prod --frozen-lockfile
+FROM monorepo-base AS prod-deps
+RUN --mount=type=cache,target=/pnpm/store \
+    pnpm install --filter auth-server... --prod --frozen-lockfile
 
-FROM base AS production
-COPY --from=prod-deps /app/node_modules /app/node_modules
-COPY --from=build /app/dist /app/dist
+FROM monorepo-base AS production
+WORKDIR /repo/apps/auth-server
+
+COPY --from=prod-deps /repo/node_modules /repo/node_modules
+COPY --from=build /repo/apps/auth-server/dist ./dist
+COPY apps/auth-server/package.json .
 CMD [ "pnpm", "start" ]
 
-FROM base AS development
-COPY --from=deps /app/node_modules /app/node_modules
+FROM deps AS development
+WORKDIR /repo/apps/auth-server
 CMD [ "pnpm", "dev" ]
