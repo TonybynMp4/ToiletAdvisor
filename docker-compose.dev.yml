@@ -1,11 +1,4 @@
 services:
-  # lets docker-compose know about the base image so you don't have to build it manually
-  base:
-    image: monorepo-base
-    build:
-      context: .
-      dockerfile: Dockerfile
-
   mysql:
     image: mysql:9
     container_name: mysql
@@ -44,30 +37,28 @@ services:
   api:
     build:
       context: .
-      dockerfile: ./apps/api-server/Dockerfile
-      target: development
+      dockerfile: Dockerfile
+      target: api-server-dev
     image: api-dev
     container_name: api
     restart: unless-stopped
     environment:
       NODE_ENV: ${NODE_ENV:-production}
-      PORT: 3000
+      PORT: ${API_PORT:-3000}
       DATABASE_URL: ${DATABASE_URL}
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost}
       UPLOADTHING_API_KEY: ${UPLOADTHING_API_KEY}
     ports:
-      - 3001:3000
+      - ${API_PORT:-3000}:${API_PORT:-3000}
     volumes:
       - ./apps/api-server:/repo/apps/api-server
       - ./packages:/repo/packages
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health" ]
+      test: ["CMD", "curl", "-f", "http://localhost:${API_PORT:-3000}/health" ]
       interval: 30s
       timeout: 5s
       retries: 5
     depends_on:
-      base:
-        condition: service_completed_successfully
       mysql:
         condition: service_healthy
     networks:
@@ -76,30 +67,28 @@ services:
   auth:
     build:
       context: .
-      dockerfile: ./apps/auth-server/Dockerfile
-      target: development
+      dockerfile: Dockerfile
+      target: auth-server-dev
     image: auth-dev
     container_name: auth
     restart: unless-stopped
     environment:
       NODE_ENV: ${NODE_ENV:-production}
-      PORT: 3000
+      PORT: ${AUTH_PORT:-3001}
       DATABASE_URL: ${DATABASE_URL}
       REDIS_URL: redis://redis:6379
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:5173}
     ports:
-      - 3002:3000
+      - ${AUTH_PORT:-3001}:${AUTH_PORT:-3001}
     volumes:
       - ./apps/auth-server:/repo/apps/auth-server
       - ./packages:/repo/packages
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health" ]
+      test: ["CMD", "curl", "-f", "http://localhost:${AUTH_PORT:-3001}/health" ]
       interval: 30s
       timeout: 5s
       retries: 5
     depends_on:
-      base:
-        condition: service_completed_successfully
       mysql:
         condition: service_healthy
       redis:
@@ -110,22 +99,20 @@ services:
   web:
     build:
       context: .
-      dockerfile: ./apps/web/Dockerfile
-      target: development
+      dockerfile: Dockerfile
+      target: web-dev
     image: web-dev
     container_name: web
     restart: unless-stopped
     environment:
-      VITE_API_URL: http://api:3000
-      VITE_AUTH_URL: http://auth:3000
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:3000}
+      VITE_AUTH_URL: ${VITE_AUTH_URL:-http://localhost:3001}
     ports:
       - 5173:5173
     volumes:
       - ./apps/web:/repo/apps/web
       - ./packages:/repo/packages
     depends_on:
-      base:
-        condition: service_completed_successfully
       api:
         condition: service_healthy
       auth:

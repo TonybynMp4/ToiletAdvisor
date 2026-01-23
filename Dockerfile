@@ -35,7 +35,15 @@ COPY ./apps/web/nginx.conf /etc/nginx/conf.d/default.conf
 CMD ["nginx", "-g", "daemon off;"]
 
 # dev servers
-FROM base AS dev
+FROM base AS dev-base
 COPY . /app
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile && \
-	pnpm deploy --filter=api-server
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+
+FROM dev-base AS api-server-dev
+CMD [ "pnpm", "dev:api" ]
+
+FROM dev-base AS auth-server-dev
+CMD [ "pnpm", "dev:auth" ]
+
+FROM dev-base AS web-dev
+CMD [ "pnpm", "dev:web" ]
