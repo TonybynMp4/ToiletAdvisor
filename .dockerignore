@@ -13,7 +13,8 @@ packages/*/dist
 .git
 .github
 .gitignore
-.env*.example
+apps/*/.env*
+.env.*.example
 .editorconfig
 scripts
 .vscode

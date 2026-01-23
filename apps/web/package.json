@@ -5,7 +5,7 @@
 	"scripts": {
 		"build": "pnpm react-router build",
 		"dev": "pnpm react-router dev",
-		"start": "pnpm react-router-serve ./build/server/index.js",
+		"start": "pnpm react-router serve",
 		"check-types": "pnpm react-router typegen && tsc"
 	},
 	"dependencies": {

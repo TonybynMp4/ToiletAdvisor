@@ -1,10 +1,4 @@
 services:
-  base:
-    image: monorepo-base
-    build:
-      context: .
-      dockerfile: Dockerfile
-
   mysql:
     image: mysql:9
     container_name: mysql
@@ -43,8 +37,8 @@ services:
   api:
     build:
       context: .
-      dockerfile: ./apps/api-server/Dockerfile
-      target: production
+      dockerfile: Dockerfile
+      target: api-server
     image: api
     container_name: api
     restart: unless-stopped
@@ -57,12 +51,10 @@ services:
       UPLOADTHING_API_KEY: ${UPLOADTHING_API_KEY}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/health" ]
-      interval: 30s
+      interval: 10s
       timeout: 5s
       retries: 5
     depends_on:
-      base:
-        condition: service_completed_successfully
       mysql:
         condition: service_healthy
       redis:
@@ -73,8 +65,8 @@ services:
   auth:
     build:
       context: .
-      dockerfile: ./apps/auth-server/Dockerfile
-      target: production
+      dockerfile: Dockerfile
+      target: auth-server
     image: auth
     container_name: auth
     restart: unless-stopped
@@ -86,12 +78,10 @@ services:
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/health" ]
-      interval: 30s
+      interval: 10s
       timeout: 5s
       retries: 5
     depends_on:
-      base:
-        condition: service_completed_successfully
       mysql:
         condition: service_healthy
       redis:
@@ -102,19 +92,17 @@ services:
   web:
     build:
       context: .
-      dockerfile: ./apps/web/Dockerfile
-      target: production
+      dockerfile: Dockerfile
+      target: web
     image: web
     container_name: web
     restart: unless-stopped
     environment:
-      VITE_API_URL: http://api:3000
-      VITE_AUTH_URL: http://auth:3000
+      VITE_API_URL: ${VITE_API_URL:-http://api:3000}
+      VITE_AUTH_URL: ${VITE_AUTH_URL:-http://auth:3000}
     ports:
       - "80:80"
     depends_on:
-      base:
-        condition: service_completed_successfully
       api:
         condition: service_healthy
       auth:

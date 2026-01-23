@@ -15,7 +15,6 @@
 		"dev:api": "pnpm --filter api-server dev",
 		"dev:auth": "pnpm --filter auth-server dev",
 		"build": "pnpm -r build",
-		"preprod": "docker build -f Dockerfile -t monorepo-base .",
 		"prod": "docker compose up --build -d",
 		"prod:down": "docker compose down -v",
 		"db:push": "pnpm --filter @toiletadvisor/db db:push",
