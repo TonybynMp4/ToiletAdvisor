@@ -10,52 +10,70 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  setup:
+    name: Setup deps
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: Use Node.js 25
+        uses: actions/setup-node@v6
+        with:
+          node-version: 25
+          cache: pnpm
+      - name: Fetch dependencies
+        run: pnpm fetch --frozen-lockfile
+      - name: Install dependencies
+        run: pnpm install
+
   typecheck:
-    name: Typecheck
+    needs: setup
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v5
+      - uses: actions/checkout@v6
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 25
+          cache: pnpm
+      - name: Install (offline)
+        run: pnpm install --offline --frozen-lockfile
 
-      - name: Install Dependencies
-        run: npm install -g pnpm && pnpm install
+      - run: pnpm ci:env
+      - run: pnpm run typecheck
 
-      - name: Copy .env.example files
-        shell: bash
-        run: pnpm ci:env
-
-      - name: Typecheck
-        run: pnpm run typecheck
   lint:
-    name: Lint
+    needs: setup
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v5
+      - uses: actions/checkout@v6
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 25
+          cache: pnpm
 
-      - name: Install Dependencies
-        run: npm install -g pnpm && pnpm install
+      - name: Install (offline)
+        run: pnpm install --offline --frozen-lockfile
 
-      - name: Copy .env.example files
-        shell: bash
-        run: pnpm ci:env
+      - run: pnpm ci:env
+      - run: pnpm run lint
 
-      - name: Lint
-        run: pnpm run lint
   build:
-    name: Build
-    runs-on: ubuntu-latest
     needs: [typecheck, lint]
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v5
+      - uses: actions/checkout@v6
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 25
+          cache: pnpm
+      - name: Install (offline)
+        run: pnpm install --offline --frozen-lockfile
 
-      - name: Install Dependencies
-        run: npm install -g pnpm && pnpm install
-
-      - name: Copy .env.example files
-        shell: bash
-        run: pnpm ci:env
-
-      - name: Build
-        run: pnpm run build
+      - run: pnpm ci:env
+      - run: pnpm run build

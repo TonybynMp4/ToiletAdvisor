@@ -8,8 +8,6 @@ services:
       MYSQL_DATABASE: ${DATABASE_NAME}
       MYSQL_USER: ${DATABASE_USER}
       MYSQL_PASSWORD: ${DATABASE_PASSWORD}
-    ports:
-      - "${DATABASE_PORT:-3306}:3306"
     volumes:
       - mysql:/var/lib/mysql
     healthcheck:
@@ -50,7 +48,7 @@ services:
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost}
       UPLOADTHING_API_KEY: ${UPLOADTHING_API_KEY}
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health" ]
+      test: ["CMD", "curl", "-f", "http://api:3000/health" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -77,7 +75,7 @@ services:
       REDIS_URL: redis://redis:6379
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost}
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health" ]
+      test: ["CMD", "curl", "-f", "http://auth:3000/health" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -112,9 +110,7 @@ services:
 
 volumes:
   mysql:
-    name: mysql
   redis:
-    name: redis
 
 networks:
   toiletadvisor-network:

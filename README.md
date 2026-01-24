@@ -32,6 +32,7 @@ toiletadvisor/
 ```
 
 ### Env structure
+```
 toiletadvisor/
 ├── apps/
 │   ├── web/
@@ -44,4 +45,7 @@ toiletadvisor/
 │   └── db/
 │       └── .env.example # DB connection env for running migrations locally
 │   └── env/ # Type-safe environment management package, defines the environment schema
-├── .env.example       # Root env for development & production
+├── .env.prod.example       # Root env for production
+├── .env.dev.example        # Root env for development
+└── .env              # Actual env file (gitignored, copy the dev example and fill in values)
+```

@@ -51,10 +51,10 @@ services:
     ports:
       - ${API_PORT:-3000}:${API_PORT:-3000}
     volumes:
-      - ./apps/api-server:/repo/apps/api-server
-      - ./packages:/repo/packages
+      - ./apps/api-server:/app/apps/api-server
+      - ./packages:/app/packages
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:${API_PORT:-3000}/health" ]
+      test: curl -f http://localhost:${API_PORT:-3000}/health || exit 1
       interval: 30s
       timeout: 5s
       retries: 5
@@ -81,10 +81,10 @@ services:
     ports:
       - ${AUTH_PORT:-3001}:${AUTH_PORT:-3001}
     volumes:
-      - ./apps/auth-server:/repo/apps/auth-server
-      - ./packages:/repo/packages
+      - ./apps/auth-server:/app/apps/auth-server
+      - ./packages:/app/packages
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:${AUTH_PORT:-3001}/health" ]
+      test: curl -f http://localhost:${AUTH_PORT:-3001}/health || exit 1
       interval: 30s
       timeout: 5s
       retries: 5
@@ -110,8 +110,8 @@ services:
     ports:
       - 5173:5173
     volumes:
-      - ./apps/web:/repo/apps/web
-      - ./packages:/repo/packages
+      - ./apps/web:/app/apps/web
+      - ./packages:/app/packages
     depends_on:
       api:
         condition: service_healthy
@@ -122,9 +122,7 @@ services:
 
 volumes:
   mysql:
-    name: mysql
   redis:
-    name: redis
 
 networks:
   toiletadvisor-network:

@@ -15,11 +15,11 @@ COPY .env apps/auth-server/.env
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 RUN pnpm run -r build
 RUN pnpm deploy --filter=api-server --prod /prod/api-server && \
-    cp -r /app/apps/api-server/dist /prod/api-server/ && \
+	cp -r /app/apps/api-server/dist /prod/api-server/ && \
 	pnpm deploy --filter=auth-server --prod /prod/auth-server && \
-    cp -r /app/apps/auth-server/dist /prod/auth-server/ && \
+	cp -r /app/apps/auth-server/dist /prod/auth-server/ && \
 	pnpm deploy --filter=web --prod /prod/web && \
-    cp -r /app/apps/web/build /prod/web/
+	cp -r /app/apps/web/build /prod/web/
 
 FROM base AS api-server
 COPY --from=build /prod/api-server .

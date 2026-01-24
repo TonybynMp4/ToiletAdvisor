@@ -5,10 +5,10 @@ echo "Creating .env files from .env.example..."
 # Copy frontend .env.example
 folder="./apps/web"
 if [ -f "$folder/.env.example" ]; then
-    cp "$folder/.env.example" "$folder/.env"
-    echo "Frontend .env created"
+	cp "$folder/.env.example" "$folder/.env"
+	echo "Frontend .env created"
 else
-    echo "Frontend .env.example not found"
+	echo "Frontend .env.example not found"
 fi
 
 # Copy API .env.example
