@@ -1,10 +1,9 @@
-import * as React from "react";
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
 import { cva, type VariantProps } from "class-variance-authority";
-
-import { cn } from "@/lib/utils";
+import * as React from "react";
 import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 
 function ItemGroup({ className, ...props }: React.ComponentProps<"div">) {
 	return (
@@ -84,8 +83,7 @@ const itemMediaVariants = cva(
 			variant: {
 				default: "bg-transparent",
 				icon: "[&_svg:not([class*='size-'])]:size-4",
-				image:
-					"size-10 overflow-hidden rounded-sm group-data-[size=sm]/item:size-8 group-data-[size=xs]/item:size-6 [&_img]:size-full [&_img]:object-cover",
+				image: "size-10 overflow-hidden rounded-sm group-data-[size=sm]/item:size-8 group-data-[size=xs]/item:size-6 [&_img]:size-full [&_img]:object-cover",
 			},
 		},
 		defaultVariants: {
@@ -150,7 +148,11 @@ function ItemDescription({ className, ...props }: React.ComponentProps<"p">) {
 
 function ItemActions({ className, ...props }: React.ComponentProps<"div">) {
 	return (
-		<div data-slot="item-actions" className={cn("gap-2 flex items-center", className)} {...props} />
+		<div
+			data-slot="item-actions"
+			className={cn("gap-2 flex items-center", className)}
+			{...props}
+		/>
 	);
 }
 

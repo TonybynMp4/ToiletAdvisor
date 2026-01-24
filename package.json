@@ -24,7 +24,7 @@
 		"db:watch": "pnpm --filter @toiletadvisor/db db:watch",
 		"db:stop": "pnpm --filter @toiletadvisor/db db:stop",
 		"db:down": "pnpm --filter @toiletadvisor/db db:down",
-		"typecheck": "pnpm -r check-types",
+		"typecheck": "pnpm -r check",
 		"lint": "oxlint && oxfmt --write",
 		"ci:env": "sh ./scripts/copy-env.sh"
 	},

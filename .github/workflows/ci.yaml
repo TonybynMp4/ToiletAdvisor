@@ -1,79 +1,79 @@
 name: CI
 
 on:
-  push:
-  pull_request:
-    types: [opened, reopened]
+    push:
+    pull_request:
+        types: [opened, reopened]
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
 
 jobs:
-  setup:
-    name: Setup deps
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-      - name: Use Node.js 25
-        uses: actions/setup-node@v6
-        with:
-          node-version: 25
-          cache: pnpm
-      - name: Fetch dependencies
-        run: pnpm fetch --frozen-lockfile
-      - name: Install dependencies
-        run: pnpm install
+    setup:
+        name: Setup deps
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v6
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+            - name: Use Node.js 25
+              uses: actions/setup-node@v6
+              with:
+                  node-version: 25
+                  cache: pnpm
+            - name: Fetch dependencies
+              run: pnpm fetch --frozen-lockfile
+            - name: Install dependencies
+              run: pnpm install
 
-  typecheck:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4
-      - name: Setup Node
-        uses: actions/setup-node@v6
-        with:
-          node-version: 25
-          cache: pnpm
-      - name: Install (offline)
-        run: pnpm install --offline --frozen-lockfile
+    typecheck:
+        needs: setup
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v6
+            - uses: pnpm/action-setup@v4
+            - name: Setup Node
+              uses: actions/setup-node@v6
+              with:
+                  node-version: 25
+                  cache: pnpm
+            - name: Install (offline)
+              run: pnpm install --offline --frozen-lockfile
 
-      - run: pnpm ci:env
-      - run: pnpm run typecheck
+            - run: pnpm ci:env
+            - run: pnpm run typecheck
 
-  lint:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4
-      - name: Setup Node
-        uses: actions/setup-node@v6
-        with:
-          node-version: 25
-          cache: pnpm
-      - name: Install (offline)
-        run: pnpm install --offline --frozen-lockfile
+    lint:
+        needs: setup
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v6
+            - uses: pnpm/action-setup@v4
+            - name: Setup Node
+              uses: actions/setup-node@v6
+              with:
+                  node-version: 25
+                  cache: pnpm
+            - name: Install (offline)
+              run: pnpm install --offline --frozen-lockfile
 
-      - run: pnpm ci:env
-      - run: pnpm run lint
+            - run: pnpm ci:env
+            - run: pnpm run lint
 
-  build:
-    needs: [typecheck, lint]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4
-      - name: Setup Node
-        uses: actions/setup-node@v6
-        with:
-          node-version: 25
-          cache: pnpm
-      - name: Install (offline)
-        run: pnpm install --offline --frozen-lockfile
+    build:
+        needs: [typecheck, lint]
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v6
+            - uses: pnpm/action-setup@v4
+            - name: Setup Node
+              uses: actions/setup-node@v6
+              with:
+                  node-version: 25
+                  cache: pnpm
+            - name: Install (offline)
+              run: pnpm install --offline --frozen-lockfile
 
-      - run: pnpm ci:env
-      - run: pnpm run build
+            - run: pnpm ci:env
+            - run: pnpm run build

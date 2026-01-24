@@ -32,6 +32,7 @@ toiletadvisor/
 ```
 
 ### Env structure
+
 ```
 toiletadvisor/
 ├── apps/

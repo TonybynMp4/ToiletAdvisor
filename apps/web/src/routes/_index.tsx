@@ -18,7 +18,7 @@ const TITLE_TEXT = `
     ╚═╝       ╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝
  `;
 
-export function meta({}: Route.MetaArgs) {
+export function meta(_: Route.MetaArgs) {
     return [
         { title: "toiletadvisor" },
         { name: "description", content: "toiletadvisor is a web application" },

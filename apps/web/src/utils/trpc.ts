@@ -1,6 +1,5 @@
 import type { ApiRouter } from "@toiletadvisor/api/routers/index";
 import type { AuthRouter } from "@toiletadvisor/auth/routers/index";
-
 import { QueryCache, QueryClient } from "@tanstack/react-query";
 import { env } from "@toiletadvisor/env/web";
 import { createTRPCClient, httpBatchLink } from "@trpc/client";

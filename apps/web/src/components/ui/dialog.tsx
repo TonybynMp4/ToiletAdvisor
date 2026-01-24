@@ -1,9 +1,8 @@
-import * as React from "react";
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
-
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { IconX } from "@tabler/icons-react";
+import * as React from "react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 function Dialog({ ...props }: DialogPrimitive.Root.Props) {
 	return <DialogPrimitive.Root data-slot="dialog" {...props} />;
@@ -57,7 +56,13 @@ function DialogContent({
 				{showCloseButton && (
 					<DialogPrimitive.Close
 						data-slot="dialog-close"
-						render={<Button variant="ghost" className="absolute top-2 right-2" size="icon-sm" />}
+						render={
+							<Button
+								variant="ghost"
+								className="absolute top-2 right-2"
+								size="icon-sm"
+							/>
+						}
 					>
 						<IconX />
 						<span className="sr-only">Close</span>
@@ -70,7 +75,11 @@ function DialogContent({
 
 function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
 	return (
-		<div data-slot="dialog-header" className={cn("gap-2 flex flex-col", className)} {...props} />
+		<div
+			data-slot="dialog-header"
+			className={cn("gap-2 flex flex-col", className)}
+			{...props}
+		/>
 	);
 }
 
@@ -93,7 +102,9 @@ function DialogFooter({
 		>
 			{children}
 			{showCloseButton && (
-				<DialogPrimitive.Close render={<Button variant="outline" />}>Close</DialogPrimitive.Close>
+				<DialogPrimitive.Close render={<Button variant="outline" />}>
+					Close
+				</DialogPrimitive.Close>
 			)}
 		</div>
 	);
@@ -103,7 +114,7 @@ function DialogTitle({ className, ...props }: DialogPrimitive.Title.Props) {
 	return (
 		<DialogPrimitive.Title
 			data-slot="dialog-title"
-			className={cn("text-sm leading-none font-medium", className)}
+			className={cn("text-base leading-none font-medium", className)}
 			{...props}
 		/>
 	);

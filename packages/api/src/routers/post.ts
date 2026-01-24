@@ -1,5 +1,4 @@
 import { db } from "@toiletadvisor/db";
-
 import { post } from "@toiletadvisor/db/schema/index";
 import { eq } from "drizzle-orm";
 import z from "zod";

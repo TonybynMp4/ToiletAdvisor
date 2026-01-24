@@ -1,5 +1,5 @@
-import { db } from "@toiletadvisor/db";
 import type { Context as HonoContext } from "hono";
+import { db } from "@toiletadvisor/db";
 
 export type CreateContextOptions = {
 	context: HonoContext;

@@ -1,8 +1,8 @@
 "use client";
 
+import type { KeyboardEvent, MouseEvent, ReactElement, ReactNode } from "react";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import { type LucideProps, StarIcon } from "lucide-react";
-import type { KeyboardEvent, MouseEvent, ReactElement, ReactNode } from "react";
 import {
 	Children,
 	cloneElement,
@@ -153,7 +153,10 @@ export const Rating = ({
 	});
 
 	const handleValueChange = useCallback(
-		(event: MouseEvent<HTMLButtonElement> | KeyboardEvent<HTMLButtonElement>, newValue: number) => {
+		(
+			event: MouseEvent<HTMLButtonElement> | KeyboardEvent<HTMLButtonElement>,
+			newValue: number,
+		) => {
 			if (!readOnly) {
 				onChange?.(event, newValue);
 				onValueChange?.(newValue);

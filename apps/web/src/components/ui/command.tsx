@@ -1,7 +1,6 @@
-import * as React from "react";
+import { IconSearch, IconCheck } from "@tabler/icons-react";
 import { Command as CommandPrimitive } from "cmdk";
-
-import { cn } from "@/lib/utils";
+import * as React from "react";
 import {
 	Dialog,
 	DialogContent,
@@ -10,7 +9,7 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog";
 import { InputGroup, InputGroupAddon } from "@/components/ui/input-group";
-import { IconSearch, IconCheck } from "@tabler/icons-react";
+import { cn } from "@/lib/utils";
 
 function Command({ className, ...props }: React.ComponentProps<typeof CommandPrimitive>) {
 	return (
@@ -46,7 +45,7 @@ function CommandDialog({
 				<DialogDescription>{description}</DialogDescription>
 			</DialogHeader>
 			<DialogContent
-				className={cn("rounded-xl! overflow-hidden p-0", className)}
+				className={cn("rounded-xl! top-1/3 translate-y-0 overflow-hidden p-0", className)}
 				showCloseButton={showCloseButton}
 			>
 				{children}

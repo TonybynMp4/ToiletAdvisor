@@ -1,9 +1,8 @@
-import { useMemo } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-
-import { cn } from "@/lib/utils";
+import { useMemo } from "react";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 
 function FieldSet({ className, ...props }: React.ComponentProps<"fieldset">) {
 	return (
@@ -84,7 +83,10 @@ function FieldContent({ className, ...props }: React.ComponentProps<"div">) {
 	return (
 		<div
 			data-slot="field-content"
-			className={cn("gap-0.5 group/field-content flex flex-1 flex-col leading-snug", className)}
+			className={cn(
+				"gap-0.5 group/field-content flex flex-1 flex-col leading-snug",
+				className,
+			)}
 			{...props}
 		/>
 	);
@@ -187,7 +189,9 @@ function FieldError({
 
 		return (
 			<ul className="ml-4 flex list-disc flex-col gap-1">
-				{uniqueErrors.map((error, index) => error?.message && <li key={index}>{error.message}</li>)}
+				{uniqueErrors.map(
+					(error, index) => error?.message && <li key={index}>{error.message}</li>,
+				)}
 			</ul>
 		);
 	}, [children, errors]);
