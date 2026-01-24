@@ -1,3 +1,10 @@
 {
-	"ignorePatterns": []
+	"ignorePatterns": [],
+	"insertFinalNewline": false,
+	"tabWidth": 4,
+	"bracketSpacing": true,
+	"experimentalSortImports": {
+		"newlinesBetween": false,
+		"ignoreCase": true
+	}
 }

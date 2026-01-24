@@ -1,13 +1,17 @@
 packages:
-  - apps/*
-  - packages/*
+    - apps/*
+    - packages/*
+syncInjectedDepsAfterScripts:
+    - build
+injectWorkspacePackages: true
+enablePrePostScripts: true
 catalog:
-  dotenv: ^17.2.3
-  zod: ^4.3.5
-  "@trpc/server": ^11.7.2
-  "@trpc/client": ^11.7.2
-  drizzle-orm: ^0.45.1
-  hono: ^4.11.3
-  "@hono/node-server": "^1.19.8"
-  "@hono/trpc-server": "^0.4.1"
-  "@types/node": ^25.0.6
+    dotenv: ^17.2.3
+    zod: ^4.3.5
+    "@trpc/server": ^11.7.2
+    "@trpc/client": ^11.7.2
+    drizzle-orm: ^0.45.1
+    hono: ^4.11.3
+    "@hono/node-server": "^1.19.8"
+    "@hono/trpc-server": "^0.4.1"
+    "@types/node": ^25.0.6

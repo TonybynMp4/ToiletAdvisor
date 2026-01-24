@@ -1,8 +1,7 @@
 import { db } from "@toiletadvisor/db";
+import { user } from "@toiletadvisor/db/schema/index";
 import { eq } from "drizzle-orm";
 import z from "zod";
-
-import { user } from "@toiletadvisor/db/schema/index";
 import { publicProcedure, router } from "../index";
 
 export const authRouter = router({

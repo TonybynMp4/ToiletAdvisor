@@ -1,8 +1,7 @@
-import type { ApiRouter } from "@ToiletAdvisor/api/routers/index";
-import type { AuthRouter } from "@ToiletAdvisor/auth/routers/index";
-
+import type { ApiRouter } from "@toiletadvisor/api/routers/index";
+import type { AuthRouter } from "@toiletadvisor/auth/routers/index";
 import { QueryCache, QueryClient } from "@tanstack/react-query";
-import { env } from "@ToiletAdvisor/env/web";
+import { env } from "@toiletadvisor/env/web";
 import { createTRPCClient, httpBatchLink } from "@trpc/client";
 import { createTRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import { toast } from "sonner";

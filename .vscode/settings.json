@@ -1,3 +1,26 @@
 {
-	"typescript.tsdk": "node_modules\\typescript\\lib"
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": "explicit",
+		"source.removeUnusedImports": "explicit"
+	},
+	"editor.defaultFormatter": "oxc.oxc-vscode",
+	"editor.formatOnSave": true,
+	"oxc.fmt.configPath": ".oxfmtrc.json",
+	"typescript.preferences.autoImportSpecifierExcludeRegexes": [
+		"@radix-ui",
+		"radix-ui",
+		"react-day-picker",
+		"^lucide-react/dist/lucide-react.suffixed$",
+		"react-email"
+	],
+	"typescript.preferences.organizeImports": {
+		"typeOrder": "inline"
+	},
+	"typescript.tsdk": "node_modules\\typescript\\lib",
+	"[dockerfile]": {
+		"editor.defaultFormatter": "ms-azuretools.vscode-containers"
+	},
+	"[nginx]": {
+		"editor.defaultFormatter": "ahmadalli.vscode-nginx-conf"
+	},
 }

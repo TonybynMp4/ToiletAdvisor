@@ -1,9 +1,8 @@
+import { IconChevronLeft, IconChevronRight, IconChevronDown } from "@tabler/icons-react";
 import * as React from "react";
 import { DayPicker, getDefaultClassNames, type DayButton } from "react-day-picker";
-
-import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { IconChevronLeft, IconChevronRight, IconChevronDown } from "@tabler/icons-react";
+import { cn } from "@/lib/utils";
 
 function Calendar({
 	className,
@@ -78,7 +77,10 @@ function Calendar({
 					defaultClassNames.weekday,
 				),
 				week: cn("flex w-full mt-2", defaultClassNames.week),
-				week_number_header: cn("select-none w-(--cell-size)", defaultClassNames.week_number_header),
+				week_number_header: cn(
+					"select-none w-(--cell-size)",
+					defaultClassNames.week_number_header,
+				),
 				week_number: cn(
 					"text-[0.8rem] select-none text-muted-foreground",
 					defaultClassNames.week_number,
@@ -91,7 +93,7 @@ function Calendar({
 					defaultClassNames.day,
 				),
 				range_start: cn(
-					"rounded-l-(--cell-radius) bg-muted elative after:bg-muted after:absolute after:inset-y-0 after:w-4 after:right-0 -z-0 isolate",
+					"rounded-l-(--cell-radius) bg-muted relative after:bg-muted after:absolute after:inset-y-0 after:w-4 after:right-0 -z-0 isolate",
 					defaultClassNames.range_start,
 				),
 				range_middle: cn("rounded-none", defaultClassNames.range_middle),
@@ -113,7 +115,14 @@ function Calendar({
 			}}
 			components={{
 				Root: ({ className, rootRef, ...props }) => {
-					return <div data-slot="calendar" ref={rootRef} className={cn(className)} {...props} />;
+					return (
+						<div
+							data-slot="calendar"
+							ref={rootRef}
+							className={cn(className)}
+							{...props}
+						/>
+					);
 				},
 				Chevron: ({ className, orientation, ...props }) => {
 					if (orientation === "left") {

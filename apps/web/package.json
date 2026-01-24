@@ -3,10 +3,10 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"build": "react-router build",
-		"dev": "react-router dev",
-		"start": "react-router-serve ./build/server/index.js",
-		"check-types": "react-router typegen && tsc"
+		"build": "pnpm react-router build",
+		"dev": "pnpm react-router dev",
+		"start": "pnpm react-router serve",
+		"check": "pnpm react-router typegen && tsc"
 	},
 	"dependencies": {
 		"@base-ui/react": "^1.0.0",
@@ -38,6 +38,7 @@
 		"react-day-picker": "^9.13.0",
 		"react-dom": "19.2.3",
 		"react-dropzone": "^14.3.8",
+		"react-resizable-panels": "^4.4.2",
 		"react-router": "^7.10.1",
 		"recharts": "2.15.4",
 		"shadcn": "^3.6.2",

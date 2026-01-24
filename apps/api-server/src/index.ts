@@ -1,7 +1,7 @@
 import { trpcServer } from "@hono/trpc-server";
 import { createContext } from "@toiletadvisor/api/context";
 import { appRouter } from "@toiletadvisor/api/routers/index";
-import { env } from "@toiletadvisor/env/server";
+import { env } from "@toiletadvisor/env/api";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
@@ -27,7 +27,7 @@ app.use(
 	}),
 );
 
-app.get("/", (c) => {
+app.get("/health", (c) => {
 	return c.text("OK");
 });
 
@@ -36,7 +36,7 @@ import { serve } from "@hono/node-server";
 serve(
 	{
 		fetch: app.fetch,
-		port: 3000,
+		port: env.PORT,
 	},
 	(info) => {
 		console.log(`Server is running on http://localhost:${info.port}`);

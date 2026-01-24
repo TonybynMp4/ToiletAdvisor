@@ -7,11 +7,15 @@
 	],
 	"type": "module",
 	"scripts": {
-		"dev": "pnpm -r dev",
-		"build": "pnpm -r build",
+		"dev": "docker compose -f docker-compose.dev.yml up --build",
+		"dev:down": "docker compose -f docker-compose.dev.yml down -v",
+		"dev:local": "pnpm -r dev",
 		"dev:web": "pnpm --filter web dev",
 		"dev:api": "pnpm --filter api-server dev",
 		"dev:auth": "pnpm --filter auth-server dev",
+		"build": "pnpm -r build",
+		"prod": "docker compose up --build -d",
+		"prod:down": "docker compose down -v",
 		"db:push": "pnpm --filter @toiletadvisor/db db:push",
 		"db:studio": "pnpm --filter @toiletadvisor/db db:studio",
 		"db:generate": "pnpm --filter @toiletadvisor/db db:generate",
@@ -20,8 +24,9 @@
 		"db:watch": "pnpm --filter @toiletadvisor/db db:watch",
 		"db:stop": "pnpm --filter @toiletadvisor/db db:stop",
 		"db:down": "pnpm --filter @toiletadvisor/db db:down",
-		"typecheck": "pnpm -r check-types",
-		"check": "oxlint && oxfmt --write"
+		"typecheck": "pnpm -r check",
+		"lint": "oxlint && oxfmt --write",
+		"ci:env": "sh ./scripts/copy-env.sh"
 	},
 	"dependencies": {
 		"@toiletadvisor/env": "workspace:*",
@@ -35,5 +40,5 @@
 		"oxlint": "^1.34.0",
 		"typescript": "^5"
 	},
-	"packageManager": "pnpm@10.25.0"
+	"packageManager": "pnpm@10.28.1"
 }
