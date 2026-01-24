@@ -13,7 +13,7 @@ packages/*/dist
 .git
 .github
 .gitignore
-apps/*/.env*
+apps/*/.env
 .env.*.example
 .editorconfig
 scripts

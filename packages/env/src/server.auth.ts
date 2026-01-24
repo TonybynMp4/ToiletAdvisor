@@ -7,6 +7,7 @@ export const env = createEnv({
         CORS_ORIGIN: z.url().default("http://localhost:80"),
         PORT: z.coerce.number().int().min(1).max(65535).default(3000),
         DATABASE_URL: z.url(),
+        REDIS_URL: z.url(),
         NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
     },
     runtimeEnv: process.env,
