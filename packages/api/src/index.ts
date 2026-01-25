@@ -1,4 +1,5 @@
-import { initTRPC } from "@trpc/server";
+import { initTRPC, TRPCError } from "@trpc/server";
+import { getCookie } from "hono/cookie";
 import z, { ZodError } from "zod";
 import type { Context } from "./context";
 
@@ -19,16 +20,25 @@ export const router = t.router;
 export const publicProcedure = t.procedure;
 
 const authMiddleware = t.middleware(async ({ ctx, next }) => {
-	const session = {};
+	const sessionId = getCookie(ctx.honoContext, "session_id");
 
-	if (!session) {
-		throw new Error("Utilisateur non authentifié");
-	}
+	if (!sessionId)
+		throw new TRPCError({ code: "UNAUTHORIZED", message: "Session cookie not found" });
+
+	const { getRedisClient } = await import("./lib/redis");
+	const redisClient = await getRedisClient();
+	const userId = await redisClient.get(`session:${sessionId}`);
+
+	if (!userId)
+		throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid or expired session" });
 
 	return next({
 		ctx: {
 			...ctx,
-			session,
+			session: {
+				sessionId,
+				userId,
+			},
 		},
 	});
 });

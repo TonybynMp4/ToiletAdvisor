@@ -1,5 +1,6 @@
 import { db } from "@toiletadvisor/db";
 import { user } from "@toiletadvisor/db/schema/index";
+import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
 import { deleteCookie, setCookie } from "hono/cookie";
 import { randomBytes } from "node:crypto";
@@ -7,6 +8,7 @@ import { protectedProcedure, publicProcedure, router } from "../index";
 import { getRedisClient, hashPassword, verifyPassword } from "../lib";
 import { loginSchema } from "../zodSchemas/auth/login";
 import { registerSchema } from "../zodSchemas/auth/register";
+import { updatePasswordSchema } from "../zodSchemas/auth/updatePassword";
 
 const SESSION_EXPIRY = 60 * 60 * 24 * 7; // 7 jours
 
@@ -97,9 +99,38 @@ export const authRouter = router({
 				id: true,
 				name: true,
 				isAdmin: true,
+				profilePictureUrl: true,
 			},
 		});
 
 		return queriedUser ?? null;
 	}),
+
+	updatePassword: protectedProcedure
+		.input(updatePasswordSchema)
+		.mutation(async ({ ctx, input }) => {
+			const [userData] = await db.select().from(user).where(eq(user.id, ctx.session.userId));
+
+			if (!userData) {
+				throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
+			}
+
+			const isValidPassword = await verifyPassword(userData.password, input.currentPassword);
+
+			if (!isValidPassword) {
+				throw new TRPCError({
+					code: "UNAUTHORIZED",
+					message: "Current password is incorrect",
+				});
+			}
+
+			const hashedPassword = await hashPassword(input.newPassword);
+
+			await db
+				.update(user)
+				.set({ password: hashedPassword })
+				.where(eq(user.id, ctx.session.userId));
+
+			return { success: true };
+		}),
 });
