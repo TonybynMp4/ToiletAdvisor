@@ -15,8 +15,10 @@
 		"@toiletadvisor/env": "workspace:*",
 		"@trpc/client": "catalog:",
 		"@trpc/server": "catalog:",
+		"argon2": "^0.44.0",
 		"dotenv": "catalog:",
 		"drizzle-orm": "catalog:",
+		"redis": "^5.10.0",
 		"zod": "catalog:"
 	},
 	"devDependencies": {

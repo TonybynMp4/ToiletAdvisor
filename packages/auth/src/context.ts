@@ -2,14 +2,14 @@ import type { Context as HonoContext } from "hono";
 import { db } from "@toiletadvisor/db";
 
 export type CreateContextOptions = {
-	context: HonoContext;
+    context: HonoContext;
 };
 
 export async function createContext({ context }: CreateContextOptions) {
-	return {
-		db,
-		honoContext: context,
-	};
+    return {
+        db,
+        honoContext: context,
+    };
 }
 
 export type Context = Awaited<ReturnType<typeof createContext>>;
