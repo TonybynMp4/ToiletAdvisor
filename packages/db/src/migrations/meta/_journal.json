@@ -1,13 +1,20 @@
 {
-	"version": "7",
-	"dialect": "mysql",
-	"entries": [
-		{
-			"idx": 0,
-			"version": "5",
-			"when": 1769281982923,
-			"tag": "0000_boring_cardiac",
-			"breakpoints": true
-		}
-	]
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1769281982923,
+      "tag": "0000_boring_cardiac",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1769363242134,
+      "tag": "0001_greedy_silver_fox",
+      "breakpoints": true
+    }
+  ]
 }
