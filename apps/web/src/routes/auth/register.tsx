@@ -1,34 +1,24 @@
-import type { z } from "zod";
+import type z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { registerSchema } from "@toiletadvisor/auth/zodSchemas/auth/register";
+import { Check } from "lucide-react";
+import { motion } from "motion/react";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { toast } from "sonner";
+import { Spinner } from "@/components/kibo-ui/spinner";
 import { Button } from "@/components/ui/button";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
-import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Field, FieldError, FieldGroup, FieldLabel, FieldSeparator } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { authTrpcClient } from "@/utils/trpc";
-import type { Route } from "./+types/register";
+import { authTrpc } from "@/utils/trpc";
 
-export function meta(_: Route.MetaArgs) {
-    return [
-        { title: "Inscription - ToiletAdvisor" },
-        { name: "description", content: "Créez votre compte ToiletAdvisor" },
-    ];
-}
+type Schema = z.infer<typeof registerSchema>;
 
 export default function Register() {
-    const navigate = useNavigate();
-    const form = useForm<z.infer<typeof registerSchema>>({
+    const [username, setUsername] = useState<string | null>(null);
+    const form = useForm<Schema>({
         resolver: zodResolver(registerSchema),
         defaultValues: {
             name: "",
@@ -36,119 +26,147 @@ export default function Register() {
             password: "",
         },
     });
+    const {
+        formState: { isSubmitting, isSubmitSuccessful },
+    } = form;
 
-    const registerMutation = useMutation({
-        mutationFn: (data: { name: string; email: string; password: string }) =>
-            authTrpcClient.auth.register.mutate(data),
-        onSuccess: () => {
-            toast.success("Compte créé avec succès ! Vous pouvez maintenant vous connecter.");
-            navigate("/dashboard");
-        },
-        onError: (error) => {
-            toast.error(error.message || "Erreur lors de l'inscription");
-        },
+    const registerMutation = useMutation(
+        authTrpc.auth.register.mutationOptions({
+            onSuccess: (data) => {
+                setUsername(data.name);
+            },
+            onError: (error) => {
+                toast.error("Erreur lors de la création du compte");
+                console.error(error);
+            },
+        }),
+    );
+
+    const handleSubmit = form.handleSubmit(async (data: Schema) => {
+        registerMutation.mutate({ name: data.name, email: data.email, password: data.password });
     });
 
-    const onSubmit = (data: z.infer<typeof registerSchema>) => {
-        registerMutation.mutate({
-            name: data.name,
-            email: data.email,
-            password: data.password,
-        });
-    };
-
-    return (
-        <Card className="w-full max-w-lg m-4 mx-auto flex">
-            <CardHeader>
-                <CardTitle className="text-2xl">Inscription</CardTitle>
-                <CardDescription>
-                    Créez votre compte pour rejoindre la communauté ToiletAdvisor
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                    <FieldGroup>
-                        <Controller
-                            name="name"
-                            control={form.control}
-                            render={({ field, fieldState }) => (
-                                <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="name">Nom</FieldLabel>
-                                    <Input
-                                        {...field}
-                                        id="name"
-                                        autoComplete="name"
-                                        aria-invalid={fieldState.invalid}
-                                        placeholder="Entrez votre nom"
-                                        required
-                                    />
-                                    {fieldState.invalid && (
-                                        <FieldError errors={[fieldState.error]} />
-                                    )}
-                                </Field>
-                            )}
-                        />
-                        <Controller
-                            name="email"
-                            control={form.control}
-                            render={({ field, fieldState }) => (
-                                <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="email">Email</FieldLabel>
-                                    <Input
-                                        {...field}
-                                        type="email"
-                                        id="email"
-                                        autoComplete="email"
-                                        aria-invalid={fieldState.invalid}
-                                        placeholder="Entrez votre email"
-                                        required
-                                    />
-                                    {fieldState.invalid && (
-                                        <FieldError errors={[fieldState.error]} />
-                                    )}
-                                </Field>
-                            )}
-                        />
-                        <Controller
-                            name="password"
-                            control={form.control}
-                            render={({ field, fieldState }) => (
-                                <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="password">Mot de passe</FieldLabel>
-                                    <Input
-                                        {...field}
-                                        type="password"
-                                        id="password"
-                                        autoComplete="new-password"
-                                        aria-invalid={fieldState.invalid}
-                                        placeholder="Entrez votre mot de passe"
-                                        required
-                                    />
-                                    {fieldState.invalid && (
-                                        <FieldError errors={[fieldState.error]} />
-                                    )}
-                                </Field>
-                            )}
-                        />
-                    </FieldGroup>
-                </form>
-            </CardContent>
-            <CardFooter className="flex flex-col gap-4">
-                <Button
-                    type="submit"
-                    className="w-full"
-                    onClick={form.handleSubmit(onSubmit)}
-                    disabled={registerMutation.isPending}
+    console.log(isSubmitSuccessful, username);
+    if (isSubmitSuccessful && username) {
+        return (
+            <div className="p-2 sm:p-5 md:p-8 w-full rounded-md gap-2 border">
+                <motion.div
+                    initial={{ opacity: 0, y: -16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, stiffness: 300, damping: 25 }}
+                    className="h-full py-6 px-3 flex flex-col items-center gap-4"
                 >
-                    {registerMutation.isPending ? "Inscription en cours..." : "S'inscrire"}
-                </Button>
-                <p>
-                    Vous avez déjà un compte ?{" "}
-                    <Link to="/login" className="text-primary hover:underline">
-                        Connectez-vous
+                    <motion.div
+                        initial={{ scale: 0.5 }}
+                        animate={{ scale: 1 }}
+                        transition={{
+                            delay: 0.3,
+                            type: "spring",
+                            stiffness: 500,
+                            damping: 15,
+                        }}
+                        className="mb-4 flex justify-center border rounded-full w-fit mx-auto p-2"
+                    >
+                        <Check className="size-8" />
+                    </motion.div>
+                    <h2 className="text-center text-2xl text-pretty font-bold mb-2">
+                        Bienvenue {username}!
+                    </h2>
+                    <p className="text-center text-lg text-pretty text-muted-foreground">
+                        Votre compte a été créé avec succès.
+                    </p>
+                    <Button nativeButton={false} render={<Link to="/login">Se connecter</Link>} />
+                </motion.div>
+            </div>
+        );
+    }
+    return (
+        <form
+            onSubmit={handleSubmit}
+            className="p-2 sm:p-5 md:p-6 w-full h-min rounded-md gap-2 border max-w-lg m-6 m-auto"
+        >
+            <FieldGroup className="flex flex-col gap-4 mb-4">
+                <h1 className="mt-6 mb-1 font-extrabold text-3xl tracking-tight col-span-full">
+                    Création de votre compte
+                </h1>
+
+                <Controller
+                    name="email"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid} className="gap-1 col-span-full">
+                            <FieldLabel htmlFor="email">Email</FieldLabel>
+                            <Input
+                                {...field}
+                                id="email"
+                                type="email"
+                                aria-invalid={fieldState.invalid}
+                                placeholder="Entrez votre email"
+                                required
+                            />
+
+                            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                        </Field>
+                    )}
+                />
+
+                <Controller
+                    name="name"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid} className="gap-1 col-span-full">
+                            <FieldLabel htmlFor="name">Nom</FieldLabel>
+                            <Input
+                                {...field}
+                                id="name"
+                                type="text"
+                                aria-invalid={fieldState.invalid}
+                                placeholder="Entrez votre nom"
+                                required
+                            />
+
+                            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                        </Field>
+                    )}
+                />
+
+                <Controller
+                    name="password"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid} className="gap-1 col-span-full">
+                            <FieldLabel htmlFor="password">Mot de passe</FieldLabel>
+                            <Input
+                                {...field}
+                                aria-invalid={fieldState.invalid}
+                                id="password"
+                                type="password"
+                                placeholder="Mot de passe"
+                                required
+                            />
+                            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                        </Field>
+                    )}
+                />
+                <FieldSeparator className="my-1" />
+                <p className="text-sm text-muted-foreground text-center ">
+                    Déjà inscrit ?{" "}
+                    <Link to="/login" className="underline">
+                        Connectez-vous ici.
                     </Link>
                 </p>
-            </CardFooter>
-        </Card>
+            </FieldGroup>
+            <div className="flex justify-end items-center w-full">
+                <Button disabled={isSubmitting} type="submit" className="w-full">
+                    {isSubmitting ? (
+                        <>
+                            <Spinner variant="ellipsis" /> Inscription...
+                        </>
+                    ) : (
+                        "S'inscrire"
+                    )}
+                </Button>
+            </div>
+        </form>
     );
 }

@@ -5,6 +5,7 @@ import { deleteCookie, setCookie } from "hono/cookie";
 import { randomBytes } from "node:crypto";
 import { protectedProcedure, publicProcedure, router } from "../index";
 import { getRedisClient, hashPassword, verifyPassword } from "../lib";
+import { loginSchema } from "../zodSchemas/auth/login";
 import { registerSchema } from "../zodSchemas/auth/register";
 
 const SESSION_EXPIRY = 60 * 60 * 24 * 7; // 7 jours
@@ -34,49 +35,46 @@ export const authRouter = router({
             throw new Error("Erreur lors de la création de l'utilisateur");
         }
 
-        return true;
+        return {
+            name: input.name,
+        };
     }),
 
-    login: publicProcedure
-        .input(registerSchema.omit({ name: true }))
-        .mutation(async ({ input, ctx }) => {
-            const queriedUser = await db.query.user.findFirst({
-                where: eq(user.email, input.email),
-            });
+    login: publicProcedure.input(loginSchema).mutation(async ({ input, ctx }) => {
+        const queriedUser = await db.query.user.findFirst({
+            where: eq(user.email, input.email),
+        });
 
-            if (!queriedUser) {
-                throw new Error("Email ou mot de passe incorrect");
-            }
+        if (!queriedUser) {
+            throw new Error("Email ou mot de passe incorrect");
+        }
 
-            const isValid = await verifyPassword(queriedUser.password, input.password);
-            if (!isValid) {
-                throw new Error("Email ou mot de passe incorrect");
-            }
+        const isValid = await verifyPassword(queriedUser.password, input.password);
+        if (!isValid) {
+            throw new Error("Email ou mot de passe incorrect");
+        }
 
-            const redisClient = await getRedisClient();
-            const sessionId = randomBytes(32).toString("hex");
-            await redisClient.set(`session:${sessionId}`, queriedUser.id, {
-                expiration: {
-                    type: "EX",
-                    value: SESSION_EXPIRY,
-                },
-            });
+        const redisClient = await getRedisClient();
+        const sessionId = randomBytes(32).toString("hex");
+        await redisClient.set(`session:${sessionId}`, queriedUser.id, {
+            expiration: {
+                type: "EX",
+                value: SESSION_EXPIRY,
+            },
+        });
 
-            setCookie(ctx.honoContext, "session_id", sessionId, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
-                sameSite: "Lax",
-                maxAge: SESSION_EXPIRY,
-                path: "/",
-            });
+        setCookie(ctx.honoContext, "session_id", sessionId, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "Lax",
+            maxAge: SESSION_EXPIRY,
+            path: "/",
+        });
 
-            return {
-                id: queriedUser.id,
-                email: queriedUser.email,
-                name: queriedUser.name,
-            };
-        }),
-
+        return {
+            name: queriedUser.name,
+        };
+    }),
     logout: protectedProcedure.mutation(async ({ ctx }) => {
         if (ctx.session) {
             const redisClient = await getRedisClient();
