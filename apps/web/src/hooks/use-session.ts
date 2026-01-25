@@ -2,11 +2,16 @@ import { useQuery } from "@tanstack/react-query";
 import { authTrpc } from "@/utils/trpc";
 
 export function useSession() {
-	const { data: user, isLoading } = useQuery(authTrpc.auth.getSession.queryOptions());
-	console.log("useSession user:", user);
+    const { data: user, isLoading } = useQuery({
+        ...authTrpc.auth.getSession.queryOptions(),
+        retry: false,
+        meta: {
+            skipErrorToast: true,
+        },
+    });
 
-	return {
-		user,
-		isLoading,
-	};
+    return {
+        user,
+        isLoading,
+    };
 }
