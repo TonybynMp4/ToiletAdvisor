@@ -8,24 +8,24 @@ import { postMedia } from "./media";
 import { rating } from "./rating";
 
 export const post = createTable("post", {
-    id: varchar({ length: 128 })
-        .$defaultFn(() => createId())
-        .primaryKey(),
-    title: varchar({ length: 255 }).notNull(),
-    description: varchar({ length: 1024 }).notNull(),
-    price: varchar({ length: 50 }).notNull(),
-    userId: varchar({ length: 128 })
-        .notNull()
-        .references((): AnyMySqlColumn => user.id, { onDelete: "cascade" }),
-    ...timeStamps,
+	id: varchar({ length: 128 })
+		.$defaultFn(() => createId())
+		.primaryKey(),
+	title: varchar({ length: 255 }).notNull(),
+	description: varchar({ length: 1024 }).notNull(),
+	price: varchar({ length: 50 }).notNull(),
+	userId: varchar({ length: 128 })
+		.notNull()
+		.references((): AnyMySqlColumn => user.id, { onDelete: "cascade" }),
+	...timeStamps,
 });
 
 export const postRelations = relations(post, ({ one, many }) => ({
-    user: one(user, {
-        fields: [post.userId],
-        references: [user.id],
-    }),
-    bookmarks: many(bookmark),
-    ratings: many(rating),
-    postMedia: many(postMedia),
+	user: one(user, {
+		fields: [post.userId],
+		references: [user.id],
+	}),
+	bookmarks: many(bookmark),
+	ratings: many(rating),
+	postMedia: many(postMedia),
 }));

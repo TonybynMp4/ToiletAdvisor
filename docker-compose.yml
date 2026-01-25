@@ -1,160 +1,160 @@
 services:
-  mysql:
-    container_name: mysql
-    image: mysql:9
-    restart: unless-stopped
-    volumes:
-      - mysql:/var/lib/mysql
-    environment:
-      MYSQL_DATABASE: ${DATABASE_NAME}
-      MYSQL_USER: ${DATABASE_USER}
-      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
-    networks:
-      - toiletadvisor-network
-    ports:
-      - "3307:3306"
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    mysql:
+        container_name: mysql
+        image: mysql:9
+        restart: unless-stopped
+        volumes:
+            - mysql:/var/lib/mysql
+        environment:
+            MYSQL_DATABASE: ${DATABASE_NAME}
+            MYSQL_USER: ${DATABASE_USER}
+            MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+        networks:
+            - toiletadvisor-network
+        ports:
+            - "3307:3306"
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
 
-  db-migration:
-    container_name: db-migration
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: db-migration
-    depends_on:
-      mysql:
-        condition: service_healthy
-    environment:
-      DATABASE_URL: ${DATABASE_URL}
-    networks:
-      - toiletadvisor-network
-    restart: "no"
+    db-migration:
+        container_name: db-migration
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: db-migration
+        depends_on:
+            mysql:
+                condition: service_healthy
+        environment:
+            DATABASE_URL: ${DATABASE_URL}
+        networks:
+            - toiletadvisor-network
+        restart: "no"
 
-  redis:
-    container_name: redis
-    image: redis:8-alpine
-    restart: unless-stopped
-    volumes:
-      - redis:/data
-    networks:
-      - toiletadvisor-network
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    redis:
+        container_name: redis
+        image: redis:8-alpine
+        restart: unless-stopped
+        volumes:
+            - redis:/data
+        networks:
+            - toiletadvisor-network
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
 
-  api:
-    container_name: api
-    image: api
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: api-server
-    restart: unless-stopped
-    depends_on:
-      mysql:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    environment:
-      NODE_ENV: ${NODE_ENV:-production}
-      PORT: 3000
-      DATABASE_URL: ${DATABASE_URL}
-      REDIS_URL: redis://redis:6379
-      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost}
-    networks:
-      - toiletadvisor-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://api:3000/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    api:
+        container_name: api
+        image: api
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: api-server
+        restart: unless-stopped
+        depends_on:
+            mysql:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
+        environment:
+            NODE_ENV: ${NODE_ENV:-production}
+            PORT: 3000
+            DATABASE_URL: ${DATABASE_URL}
+            REDIS_URL: ${REDIS_URL}
+            CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost}
+        networks:
+            - toiletadvisor-network
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://api:3000/health"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
 
-  auth:
-    container_name: auth
-    image: auth
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: auth-server
-    restart: unless-stopped
-    depends_on:
-      mysql:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    environment:
-      NODE_ENV: ${NODE_ENV:-production}
-      PORT: 3000
-      DATABASE_URL: ${DATABASE_URL}
-      REDIS_URL: redis://redis:6379
-      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost}
-    networks:
-      - toiletadvisor-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://auth:3000/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    auth:
+        container_name: auth
+        image: auth
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: auth-server
+        restart: unless-stopped
+        depends_on:
+            mysql:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
+        environment:
+            NODE_ENV: ${NODE_ENV:-production}
+            PORT: 3000
+            DATABASE_URL: ${DATABASE_URL}
+            REDIS_URL: ${REDIS_URL}
+            CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost}
+        networks:
+            - toiletadvisor-network
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://auth:3000/health"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
 
-  file-server:
-    container_name: file-server
-    image: file-server
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: file-server
-    restart: unless-stopped
-    depends_on:
-      mysql:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    environment:
-      NODE_ENV: ${NODE_ENV:-production}
-      PORT: 3000
-      DATABASE_URL: ${DATABASE_URL}
-      REDIS_URL: redis://redis:6379
-      UPLOADTHING_TOKEN: ${UPLOADTHING_TOKEN}
-    networks:
-      - toiletadvisor-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://file-server:3000/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    file-server:
+        container_name: file-server
+        image: file-server
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: file-server
+        restart: unless-stopped
+        depends_on:
+            mysql:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
+        environment:
+            NODE_ENV: ${NODE_ENV:-production}
+            PORT: 3000
+            DATABASE_URL: ${DATABASE_URL}
+            REDIS_URL: redis://redis:6379
+            UPLOADTHING_TOKEN: ${UPLOADTHING_TOKEN}
+        networks:
+            - toiletadvisor-network
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://file-server:3000/health"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
 
-  web:
-    container_name: web
-    image: web
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: web
-    restart: unless-stopped
-    depends_on:
-      api:
-        condition: service_healthy
-      auth:
-        condition: service_healthy
-    ports:
-      - "80:80"
-    environment:
-      VITE_API_URL: ${VITE_API_URL:-http://api:3000}
-      VITE_AUTH_URL: ${VITE_AUTH_URL:-http://auth:3000}
-      VITE_FILE_URL: ${VITE_FILE_URL:-http://file-server:3000}
-    networks:
-      - toiletadvisor-network
+    web:
+        container_name: web
+        image: web
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: web
+        restart: unless-stopped
+        depends_on:
+            api:
+                condition: service_healthy
+            auth:
+                condition: service_healthy
+        ports:
+            - "80:80"
+        environment:
+            VITE_API_URL: ${VITE_API_URL:-http://api:3000}
+            VITE_AUTH_URL: ${VITE_AUTH_URL:-http://auth:3000}
+            VITE_FILE_URL: ${VITE_FILE_URL:-http://file-server:3000}
+        networks:
+            - toiletadvisor-network
 
 volumes:
-  mysql:
-  redis:
+    mysql:
+    redis:
 
 networks:
-  toiletadvisor-network:
-    driver: bridge
+    toiletadvisor-network:
+        driver: bridge

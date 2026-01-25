@@ -14,9 +14,9 @@
 		"@toiletadvisor/db": "workspace:*",
 		"@toiletadvisor/env": "workspace:*",
 		"@trpc/server": "catalog:",
+		"argon2": "^0.44.0",
 		"dotenv": "catalog:",
 		"hono": "catalog:",
-		"argon2": "^0.44.0",
 		"zod": "catalog:"
 	},
 	"devDependencies": {

@@ -1,7 +1,7 @@
 {
 	"version": "5",
 	"dialect": "mysql",
-	"id": "cbc1b0a6-6aa9-4478-8eab-f31713cdcb40",
+	"id": "2705abb7-ae71-44d2-be05-807a170b0dd7",
 	"prevId": "00000000-0000-0000-0000-000000000000",
 	"tables": {
 		"bookmark": {
@@ -55,6 +55,13 @@
 		"comment": {
 			"name": "comment",
 			"columns": {
+				"id": {
+					"name": "id",
+					"type": "varchar(128)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
 				"userId": {
 					"name": "userId",
 					"type": "varchar(128)",
@@ -116,9 +123,88 @@
 				}
 			},
 			"compositePrimaryKeys": {
-				"comment_userId_postId_pk": {
-					"name": "comment_userId_postId_pk",
-					"columns": ["userId", "postId"]
+				"comment_id": {
+					"name": "comment_id",
+					"columns": ["id"]
+				}
+			},
+			"uniqueConstraints": {},
+			"checkConstraint": {}
+		},
+		"post_media": {
+			"name": "post_media",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "varchar(128)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"url": {
+					"name": "url",
+					"type": "varchar(1024)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"postId": {
+					"name": "postId",
+					"type": "varchar(128)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"userId": {
+					"name": "userId",
+					"type": "varchar(128)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamp",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": "(now())"
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "timestamp",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"onUpdate": true,
+					"default": "(now())"
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {
+				"post_media_postId_post_id_fk": {
+					"name": "post_media_postId_post_id_fk",
+					"tableFrom": "post_media",
+					"tableTo": "post",
+					"columnsFrom": ["postId"],
+					"columnsTo": ["id"],
+					"onDelete": "cascade",
+					"onUpdate": "no action"
+				},
+				"post_media_userId_user_id_fk": {
+					"name": "post_media_userId_user_id_fk",
+					"tableFrom": "post_media",
+					"tableTo": "user",
+					"columnsFrom": ["userId"],
+					"columnsTo": ["id"],
+					"onDelete": "cascade",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {
+				"post_media_id": {
+					"name": "post_media_id",
+					"columns": ["id"]
 				}
 			},
 			"uniqueConstraints": {},
@@ -266,11 +352,11 @@
 					"notNull": true,
 					"autoincrement": false
 				},
-				"email": {
-					"name": "email",
+				"profile_picture_url": {
+					"name": "profile_picture_url",
 					"type": "varchar(255)",
 					"primaryKey": false,
-					"notNull": true,
+					"notNull": false,
 					"autoincrement": false
 				},
 				"name": {
@@ -321,12 +407,7 @@
 					"columns": ["id"]
 				}
 			},
-			"uniqueConstraints": {
-				"user_email_unique": {
-					"name": "user_email_unique",
-					"columns": ["email"]
-				}
-			},
+			"uniqueConstraints": {},
 			"checkConstraint": {}
 		}
 	},
