@@ -15,6 +15,13 @@
       "when": 1769363242134,
       "tag": "0001_greedy_silver_fox",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1769367001102,
+      "tag": "0002_uneven_lady_vermin",
+      "breakpoints": true
     }
   ]
 }

@@ -13,11 +13,11 @@ const SESSION_EXPIRY = 60 * 60 * 24 * 7; // 7 jours
 export const authRouter = router({
 	register: publicProcedure.input(registerSchema).mutation(async ({ input }) => {
 		const existingUser = await db.query.user.findFirst({
-			where: eq(user.email, input.email),
+			where: eq(user.name, input.name),
 		});
 
 		if (existingUser) {
-			throw new Error("Cet email est déjà utilisé");
+			throw new Error("Ce nom est déjà utilisé");
 		}
 
 		const hashedPassword = await hashPassword(input.password);
@@ -26,7 +26,6 @@ export const authRouter = router({
 			.insert(user)
 			.values({
 				name: input.name,
-				email: input.email,
 				password: hashedPassword,
 			})
 			.$returningId();
@@ -42,16 +41,16 @@ export const authRouter = router({
 
 	login: publicProcedure.input(loginSchema).mutation(async ({ input, ctx }) => {
 		const queriedUser = await db.query.user.findFirst({
-			where: eq(user.email, input.email),
+			where: eq(user.name, input.name),
 		});
 
 		if (!queriedUser) {
-			throw new Error("Email ou mot de passe incorrect");
+			throw new Error("Nom ou mot de passe incorrect");
 		}
 
 		const isValid = await verifyPassword(queriedUser.password, input.password);
 		if (!isValid) {
-			throw new Error("Email ou mot de passe incorrect");
+			throw new Error("Nom ou mot de passe incorrect");
 		}
 
 		const redisClient = await getRedisClient();
@@ -96,7 +95,6 @@ export const authRouter = router({
 			where: eq(user.id, ctx.session.userId),
 			columns: {
 				id: true,
-				email: true,
 				name: true,
 				isAdmin: true,
 			},
