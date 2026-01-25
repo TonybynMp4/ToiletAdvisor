@@ -25,4 +25,12 @@
 	"[nginx]": {
 		"editor.defaultFormatter": "ahmadalli.vscode-nginx-conf"
 	},
+	"workbench.editor.customLabels.enabled": true,
+	"workbench.editor.customLabels.patterns": {
+		"**/apps/web/src/routes/**": "web/${dirname}/${filename}",
+		"**/package/auth/**": "auth/${filename}",
+		"**/package/api/**": "api/${filename}",
+		"**/package/env/**": "env/${filename}",
+		"**/package/db/**": "db/${filename}"
+	}
 }
