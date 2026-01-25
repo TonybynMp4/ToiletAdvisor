@@ -15,6 +15,30 @@ This project structure was initiated with [Better-T-Stack](https://github.com/Am
 - **MySQL** - Database engine
 - **Oxlint** - Oxlint + Oxfmt (linting & formatting)
 
+## Getting Started
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/tonybynmp4/toiletadvisor
+   cd toiletadvisor
+   ```
+2. **Install dependencies:**
+   ```bash
+   pnpm install
+   ```
+3. **Set up environment variables:**
+   - Copy the example environment files and fill in the required values:
+	 ```bash
+	 cp .env.dev.example .env
+	 cp packages/db/.env.example packages/db/.env
+	 ```
+4. **Run the development environment using Docker:**
+   ```bash
+   pnpm dev
+   ```
+5. **Access the application:**
+   - Frontend: `http://localhost:5173`
+   - DB: `localhost:3307` (using the credentials from your `.env` file)
+
 ## Project Structure
 
 ```
