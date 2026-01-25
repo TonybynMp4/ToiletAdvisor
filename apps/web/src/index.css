@@ -127,4 +127,21 @@
 	html {
 		@apply font-sans;
 	}
+
+	label:has(+ *:required) {
+		gap: 0 !important;
+		&::after {
+			content: "*";
+			color: var(--color-destructive);
+			margin-left: 0.25rem;
+		}
+	}
+	label:has(+ *:optional) {
+		gap: 0 !important;
+		&::after {
+			content: "(optional)";
+			color: var(--color-muted-foreground);
+			margin-left: 0.25rem;
+		}
+	}
 }

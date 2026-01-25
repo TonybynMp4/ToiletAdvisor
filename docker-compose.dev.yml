@@ -60,7 +60,7 @@ services:
       PORT: ${API_PORT:-3000}
       DATABASE_URL: ${DATABASE_URL}
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost}
-      UPLOADTHING_API_KEY: ${UPLOADTHING_API_KEY}
+      UPLOADTHING_TOKEN: ${UPLOADTHING_TOKEN}
     networks:
       - toiletadvisor-network
     healthcheck:
