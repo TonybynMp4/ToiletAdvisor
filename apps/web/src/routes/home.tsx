@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { apiTrpc, authTrpc } from "@/utils/trpc";
-import type { Route } from "./+types/_index";
+import type { Route } from "./+types/home";
 
 const TITLE_TEXT = `
  ██████╗ ███████╗████████╗████████╗███████╗██████╗
@@ -25,7 +25,7 @@ export function meta(_: Route.MetaArgs) {
     ];
 }
 
-export default function Home() {
+export default function Home(_: Route.ComponentProps) {
     const healthChecks = {
         api: useQuery(apiTrpc.healthCheck.queryOptions()),
         auth: useQuery(authTrpc.healthCheck.queryOptions()),
