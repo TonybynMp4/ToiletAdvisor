@@ -1,28 +1,29 @@
 {
-	"name": "api-server",
+	"name": "file-server",
 	"type": "module",
+	"main": "src/index.ts",
 	"scripts": {
 		"build": "tsdown",
-		"check": "tsc -b",
+		"check-types": "tsc -b",
 		"dev": "tsx watch src/index.ts",
-		"start": "node ./dist/index.mjs"
+		"start": "node dist/index.js"
 	},
 	"dependencies": {
-		"@hono/node-server": "catalog:",
-		"@hono/trpc-server": "catalog:",
-		"@toiletadvisor/api": "workspace:*",
-		"@toiletadvisor/db": "workspace:*",
 		"@toiletadvisor/env": "workspace:*",
-		"@trpc/server": "catalog:",
+		"cors": "^2.8.5",
 		"dotenv": "catalog:",
-		"hono": "catalog:",
+		"express": "^5.1.0",
+		"redis": "^5.10.0",
+		"uploadthing": "^7.7.4",
 		"zod": "catalog:"
 	},
 	"devDependencies": {
 		"@toiletadvisor/config": "workspace:*",
+		"@types/cors": "^2.8.17",
+		"@types/express": "^5.0.1",
 		"@types/node": "catalog:",
-		"tsdown": "^0.19.0",
-		"tsx": "^4.21.0",
+		"tsdown": "^0.16.5",
+		"tsx": "^4.19.2",
 		"typescript": "catalog:"
 	}
 }
