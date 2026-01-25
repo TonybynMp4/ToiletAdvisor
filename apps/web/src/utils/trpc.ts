@@ -7,45 +7,45 @@ import { createTRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import { toast } from "sonner";
 
 export const queryClient = new QueryClient({
-    queryCache: new QueryCache({
-        onError: (error, query) => {
-            if (query.meta?.skipErrorToast) return;
+	queryCache: new QueryCache({
+		onError: (error, query) => {
+			if (query.meta?.skipErrorToast) return;
 
-            toast.error(error.message, {
-                action: {
-                    label: "retry",
-                    onClick: () => queryClient.invalidateQueries({ queryKey: query.queryKey }),
-                },
-            });
-        },
-    }),
+			toast.error(error.message, {
+				action: {
+					label: "retry",
+					onClick: () => queryClient.invalidateQueries({ queryKey: query.queryKey }),
+				},
+			});
+		},
+	}),
 });
 
 export const apiTrpcClient = createTRPCClient<ApiRouter>({
-    links: [
-        httpBatchLink({
-            url: `${env.VITE_API_URL}/trpc`,
-            fetch(url, options) {
-                return fetch(url, {
-                    ...options,
-                    credentials: "include",
-                });
-            },
-        }),
-    ],
+	links: [
+		httpBatchLink({
+			url: `${env.VITE_API_URL}/trpc`,
+			fetch(url, options) {
+				return fetch(url, {
+					...options,
+					credentials: "include",
+				});
+			},
+		}),
+	],
 });
 export const authTrpcClient = createTRPCClient<AuthRouter>({
-    links: [
-        httpBatchLink({
-            url: `${env.VITE_AUTH_URL}/trpc`,
-            fetch(url, options) {
-                return fetch(url, {
-                    ...options,
-                    credentials: "include",
-                });
-            },
-        }),
-    ],
+	links: [
+		httpBatchLink({
+			url: `${env.VITE_AUTH_URL}/trpc`,
+			fetch(url, options) {
+				return fetch(url, {
+					...options,
+					credentials: "include",
+				});
+			},
+		}),
+	],
 });
 
 export const apiTrpc = createTRPCOptionsProxy<ApiRouter>({ client: apiTrpcClient, queryClient });
