@@ -21,6 +21,7 @@
 		"@toiletadvisor/api": "workspace:*",
 		"@toiletadvisor/auth": "workspace:*",
 		"@toiletadvisor/env": "workspace:*",
+		"file-server": "workspace:*",
 		"@trpc/client": "catalog:",
 		"@trpc/server": "catalog:",
 		"@trpc/tanstack-react-query": "^11.7.2",

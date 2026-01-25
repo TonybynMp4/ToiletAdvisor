@@ -4,7 +4,7 @@
 	"scripts": {
 		"build": "tsdown",
 		"check": "tsc -b",
-		"dev": "tsx watch src/index.ts ../../packages/auth/src/index.ts",
+		"dev": "tsx watch src/index.ts",
 		"start": "node ./dist/index.mjs"
 	},
 	"dependencies": {
@@ -16,6 +16,7 @@
 		"@trpc/server": "catalog:",
 		"dotenv": "catalog:",
 		"hono": "catalog:",
+		"argon2": "^0.44.0",
 		"zod": "catalog:"
 	},
 	"devDependencies": {
