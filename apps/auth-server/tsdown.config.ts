@@ -6,4 +6,5 @@ export default defineConfig({
 	outDir: "./dist",
 	clean: true,
 	noExternal: [/@toiletadvisor\/.*/],
+	external: ["argon2", "node-gyp-build", "node-gyp-build-optional-packages"],
 });

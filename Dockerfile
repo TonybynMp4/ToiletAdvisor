@@ -18,6 +18,7 @@ COPY . /app
 COPY .env apps/web/.env
 COPY .env apps/api-server/.env
 COPY .env apps/auth-server/.env
+COPY .env apps/file-server/.env
 
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --offline
 RUN pnpm run -r build
@@ -25,6 +26,8 @@ RUN pnpm deploy --filter=api-server --prod /prod/api-server && \
 	cp -r /app/apps/api-server/dist /prod/api-server/ && \
 	pnpm deploy --filter=auth-server --prod /prod/auth-server && \
 	cp -r /app/apps/auth-server/dist /prod/auth-server/ && \
+	pnpm deploy --filter=file-server --prod /prod/file-server &&  \
+	cp -r /app/apps/file-server/dist /prod/file-server/ && \
 	pnpm deploy --filter=web --prod /prod/web && \
 	cp -r /app/apps/web/build /prod/web/
 
@@ -34,6 +37,10 @@ CMD [ "pnpm", "start" ]
 
 FROM base AS auth-server
 COPY --from=build /prod/auth-server .
+CMD [ "pnpm", "start" ]
+
+FROM base AS file-server
+COPY --from=build /prod/file-server .
 CMD [ "pnpm", "start" ]
 
 FROM nginx:alpine AS web
@@ -59,6 +66,9 @@ CMD [ "pnpm", "--filter", "api-server", "dev" ]
 
 FROM dev-base AS auth-server-dev
 CMD [ "pnpm", "--filter", "auth-server", "dev" ]
+
+FROM dev-base AS file-server-dev
+CMD [ "pnpm", "--filter", "file-server", "dev" ]
 
 FROM dev-base AS web-dev
 CMD [ "pnpm", "--filter", "web", "dev" ]

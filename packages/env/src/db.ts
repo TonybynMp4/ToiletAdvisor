@@ -7,17 +7,17 @@ import { z } from "zod";
 // + override with the correct host/port for the DB connection from this package's .env file
 // with interpolation support (normally handled by docker compose, but we need dotenvexpand here for that)
 dotenvExpand.expand(
-    dotenv.config({
-        path: ["../../.env", ".env"],
-        override: true,
-    }),
+	dotenv.config({
+		path: ["../../.env", ".env"],
+		override: true,
+	}),
 );
 
 export const env = createEnv({
-    server: {
-        DATABASE_URL: z.url(),
-        NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
-    },
-    runtimeEnv: process.env,
-    emptyStringAsUndefined: true,
+	server: {
+		DATABASE_URL: z.url(),
+		NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
+	},
+	runtimeEnv: process.env,
+	emptyStringAsUndefined: true,
 });

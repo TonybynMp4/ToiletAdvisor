@@ -5,7 +5,7 @@ import { createTable, timeStamps } from "../../utils";
 import { user } from "../users";
 import { post } from "./post";
 
-export const postPicture = createTable("post_picture", {
+export const postMedia = createTable("post_media", {
 	id: varchar({ length: 128 })
 		.$defaultFn(() => createId())
 		.primaryKey(),
@@ -19,13 +19,13 @@ export const postPicture = createTable("post_picture", {
 	...timeStamps,
 });
 
-export const postPictureRelations = relations(postPicture, ({ one }) => ({
+export const postMediaRelations = relations(postMedia, ({ one }) => ({
 	user: one(user, {
-		fields: [postPicture.userId],
+		fields: [postMedia.userId],
 		references: [user.id],
 	}),
 	post: one(post, {
-		fields: [postPicture.postId],
+		fields: [postMedia.postId],
 		references: [post.id],
 	}),
 }));

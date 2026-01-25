@@ -4,7 +4,7 @@
 	"scripts": {
 		"build": "tsdown",
 		"check": "tsc -b",
-		"dev": "tsx watch src/index.ts ../../packages/auth/src/index.ts",
+		"dev": "tsx watch src/index.ts",
 		"start": "node ./dist/index.mjs"
 	},
 	"dependencies": {
@@ -14,6 +14,7 @@
 		"@toiletadvisor/db": "workspace:*",
 		"@toiletadvisor/env": "workspace:*",
 		"@trpc/server": "catalog:",
+		"argon2": "^0.44.0",
 		"dotenv": "catalog:",
 		"hono": "catalog:",
 		"zod": "catalog:"
@@ -23,6 +24,6 @@
 		"@types/node": "catalog:",
 		"tsdown": "^0.19.0",
 		"tsx": "^4.21.0",
-		"typescript": "^5"
+		"typescript": "catalog:"
 	}
 }

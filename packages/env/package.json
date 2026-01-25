@@ -5,6 +5,7 @@
 	"type": "module",
 	"exports": {
 		"./api": "./src/server.api.ts",
+		"./file": "./src/server.file.ts",
 		"./auth": "./src/server.auth.ts",
 		"./web": "./src/web.ts",
 		"./db": "./src/db.ts"
@@ -18,6 +19,6 @@
 	"devDependencies": {
 		"@toiletadvisor/config": "workspace:*",
 		"@types/node": "catalog:",
-		"typescript": "^5"
+		"typescript": "catalog:"
 	}
 }

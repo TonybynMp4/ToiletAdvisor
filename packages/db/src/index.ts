@@ -7,14 +7,14 @@ import * as schema from "./schema";
  * update.
  */
 const globalForDb = globalThis as unknown as {
-    conn: Pool | undefined;
+	conn: Pool | undefined;
 };
 
 const conn =
-    globalForDb.conn ??
-    createPool({
-        uri: process.env.DATABASE_URL,
-    });
+	globalForDb.conn ??
+	createPool({
+		uri: process.env.DATABASE_URL,
+	});
 
 if (process.env.NODE_ENV !== "production") globalForDb.conn = conn;
 

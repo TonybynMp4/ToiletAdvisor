@@ -4,7 +4,7 @@ import { type AnyMySqlColumn, varchar } from "drizzle-orm/mysql-core";
 import { createTable, timeStamps } from "../../utils";
 import { user } from "../users";
 import { bookmark } from "./bookmark";
-import { postPicture } from "./picture";
+import { postMedia } from "./media";
 import { rating } from "./rating";
 
 export const post = createTable("post", {
@@ -27,5 +27,5 @@ export const postRelations = relations(post, ({ one, many }) => ({
 	}),
 	bookmarks: many(bookmark),
 	ratings: many(rating),
-	postPictures: many(postPicture),
+	postMedia: many(postMedia),
 }));

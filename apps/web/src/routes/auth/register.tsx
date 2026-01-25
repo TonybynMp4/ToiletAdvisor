@@ -22,7 +22,6 @@ export default function Register() {
         resolver: zodResolver(registerSchema),
         defaultValues: {
             name: "",
-            email: "",
             password: "",
         },
     });
@@ -43,7 +42,7 @@ export default function Register() {
     );
 
     const handleSubmit = form.handleSubmit(async (data: Schema) => {
-        registerMutation.mutate({ name: data.name, email: data.email, password: data.password });
+        registerMutation.mutate({ name: data.name, password: data.password });
     });
 
     console.log(isSubmitSuccessful, username);
@@ -89,26 +88,6 @@ export default function Register() {
                 <h1 className="mt-6 mb-1 font-extrabold text-3xl tracking-tight col-span-full">
                     Création de votre compte
                 </h1>
-
-                <Controller
-                    name="email"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid} className="gap-1 col-span-full">
-                            <FieldLabel htmlFor="email">Email</FieldLabel>
-                            <Input
-                                {...field}
-                                id="email"
-                                type="email"
-                                aria-invalid={fieldState.invalid}
-                                placeholder="Entrez votre email"
-                                required
-                            />
-
-                            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                        </Field>
-                    )}
-                />
 
                 <Controller
                     name="name"

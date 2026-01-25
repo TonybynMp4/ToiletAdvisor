@@ -1,6 +1,6 @@
-import { createClient } from "redis";
 import type { RedisClientType } from "redis";
 import { env } from "@toiletadvisor/env/auth";
+import { createClient } from "redis";
 
 let redisClient: RedisClientType | null = null;
 

@@ -12,8 +12,7 @@
 		"@base-ui*",
 		"base-ui*",
 		"react-day-picker",
-		"^lucide-react/dist/lucide-react.suffixed$",
-		"react-email"
+		"^lucide-react/dist/lucide-react.suffixed$"
 	],
 	"typescript.preferences.organizeImports": {
 		"typeOrder": "inline"

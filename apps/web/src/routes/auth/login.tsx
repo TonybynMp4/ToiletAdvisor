@@ -21,7 +21,7 @@ export default function Login() {
     const form = useForm<Schema>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
-            email: "",
+            name: "",
             password: "",
         },
     });
@@ -42,7 +42,7 @@ export default function Login() {
     );
 
     const handleSubmit = form.handleSubmit(async (data: Schema) => {
-        loginMutation.mutate({ email: data.email, password: data.password });
+        loginMutation.mutate({ name: data.name, password: data.password });
     });
 
     if (isSubmitSuccessful && username) {
@@ -89,17 +89,17 @@ export default function Login() {
                 </h1>
 
                 <Controller
-                    name="email"
+                    name="name"
                     control={form.control}
                     render={({ field, fieldState }) => (
                         <Field data-invalid={fieldState.invalid} className="gap-1 col-span-full">
-                            <FieldLabel htmlFor="email">Email</FieldLabel>
+                            <FieldLabel htmlFor="name">Name</FieldLabel>
                             <Input
                                 {...field}
-                                id="email"
-                                type="email"
+                                id="name"
+                                type="text"
                                 aria-invalid={fieldState.invalid}
-                                placeholder="Entrez votre email"
+                                placeholder="Entrez votre nom d'utilisateur"
                                 required
                             />
 

@@ -21,9 +21,11 @@
 		"@toiletadvisor/api": "workspace:*",
 		"@toiletadvisor/auth": "workspace:*",
 		"@toiletadvisor/env": "workspace:*",
+		"file-server": "workspace:*",
 		"@trpc/client": "catalog:",
 		"@trpc/server": "catalog:",
 		"@trpc/tanstack-react-query": "^11.7.2",
+		"@uploadthing/react": "^7.3.3",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"cmdk": "^1.1.1",
@@ -60,7 +62,7 @@
 		"@types/react-dom": "^19.2.3",
 		"react-router-devtools": "^1.1.0",
 		"tailwindcss": "^4.1.18",
-		"typescript": "^5",
+		"typescript": "catalog:",
 		"vite": "^7.3.1",
 		"vite-tsconfig-paths": "^6.0.4"
 	}
