@@ -29,4 +29,13 @@ else
 	echo "Auth Server .env.example not found"
 fi
 
+# Copy File Server .env.example
+folder="./apps/file-server"
+if [ -f "$folder/.env.example" ]; then
+	cp "$folder/.env.example" "$folder/.env"
+	echo "File Server .env created"
+else
+	echo "File Server .env.example not found"
+fi
+
 echo ".env files created."

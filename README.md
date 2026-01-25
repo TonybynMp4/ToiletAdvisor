@@ -23,7 +23,9 @@ Ce projet a été structuré à partir d'un template [Better-T-Stack](https://gi
 - **Uploadthing** - Gestion des uploads de fichiers (parceque c'est galère à faire (bien) soit même)
 
 ## Architecture
+
 Le projet est organisé en monorepo avec plusieurs applications et packages partagés:
+
 - **apps/web**: Frontend React
 - **apps/api-server**: Serveur API principal -> expose l'API TRPC avec Hono
 - **apps/auth-server**: Serveur d'authentification -> expose l'API TRPC avec Hono
@@ -68,6 +70,7 @@ toiletadvisor/
 │   ├── web/         # Frontend application (React + React Router + nginx (serving & reverse proxy))
 │   ├── api-server/  # API server (Hono, TRPC)
 │   └── auth-server/ # Auth server (Hono, TRPC)
+│   └── file-server/ # File server (Express, Uploadthing)
 ├── packages/
 │   ├── api/         # API
 │   ├── auth/        # Auth API
@@ -86,6 +89,8 @@ toiletadvisor/
 │   ├── api-server/
 │   │   └── .env.example # CI env
 │   └── auth-server/
+│   │   └── .env.example # CI env
+│   └── file-server/
 │       └── .env.example # CI env
 ├── packages/
 │   └── db/

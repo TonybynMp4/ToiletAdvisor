@@ -126,6 +126,7 @@
 
 	html {
 		@apply font-sans;
+		min-height: 100%;
 	}
 
 	label:has(+ *:required) {

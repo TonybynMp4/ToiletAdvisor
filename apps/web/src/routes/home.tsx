@@ -1,64 +1,49 @@
-import { useQuery } from "@tanstack/react-query";
-import { apiTrpc, authTrpc } from "@/utils/trpc";
+import { Link } from "react-router";
+import { Button } from "@/components/ui/button";
 import type { Route } from "./+types/home";
-
-const TITLE_TEXT = `
- ██████╗ ███████╗████████╗████████╗███████╗██████╗
- ██╔══██╗██╔════╝╚══██╔══╝╚══██╔══╝██╔════╝██╔══██╗
- ██████╔╝█████╗     ██║      ██║   █████╗  ██████╔╝
- ██╔══██╗██╔══╝     ██║      ██║   ██╔══╝  ██╔══██╗
- ██████╔╝███████╗   ██║      ██║   ███████╗██║  ██║
- ╚═════╝ ╚══════╝   ╚═╝      ╚═╝   ╚══════╝╚═╝  ╚═╝
-
- ████████╗    ███████╗████████╗ █████╗  ██████╗██╗  ██╗
- ╚══██╔══╝    ██╔════╝╚══██╔══╝██╔══██╗██╔════╝██║ ██╔╝
-    ██║       ███████╗   ██║   ███████║██║     █████╔╝
-    ██║       ╚════██║   ██║   ██╔══██║██║     ██╔═██╗
-    ██║       ███████║   ██║   ██║  ██║╚██████╗██║  ██╗
-    ╚═╝       ╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝
- `;
 
 export function meta(_: Route.MetaArgs) {
 	return [
-		{ title: "toiletadvisor" },
-		{ name: "description", content: "toiletadvisor is a web application" },
+		{ title: "ToiletAdvisor - Trouvez et Évaluez les Meilleurs Toilettes" },
+		{
+			name: "description",
+			content:
+				"Découvrez et partagez des avis sur les toilettes du monde entier. Trouvez des installations propres et accessibles près de chez vous.",
+		},
 	];
 }
 
 export default function Home(_: Route.ComponentProps) {
-	const healthChecks = {
-		api: useQuery(apiTrpc.healthCheck.queryOptions()),
-		auth: useQuery(authTrpc.healthCheck.queryOptions()),
-	};
-
 	return (
-		<div className="container mx-auto max-w-3xl px-4 py-2">
-			<pre className="overflow-x-auto font-mono text-sm">{TITLE_TEXT}</pre>
-			<div className="grid gap-6">
-				<section className="rounded-lg border p-4">
-					<h2 className="mb-2 font-medium">APIs Status</h2>
-					<div className="flex items-center gap-2">
-						<div
-							className={`h-2 w-2 rounded-full ${healthChecks.api.data ? "bg-green-500" : "bg-red-500"}`}
+		<div className="min-h-screen">
+			{/* Hero Section */}
+			<section className="px-4 py-24 lg:py-32">
+				<div className="mx-auto max-w-4xl text-center">
+					<h1 className="mb-6 text-5xl font-bold leading-tight sm:text-6xl">
+						Trouvez et partagez les meilleurs toilettes publiques
+					</h1>
+					<p className="mx-auto mb-10 max-w-2xl text-lg text-slate-600 dark:text-slate-400">
+						Consultez les avis de la communauté et aidez les autres à trouver des
+						toilettes propres et accessibles.
+					</p>
+					<div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+						<Button
+							render={
+								<Link to="/register" className="flex items-center gap-2">
+									Commencer
+								</Link>
+							}
+							size="lg"
+							className="bg-cyan-600 hover:bg-cyan-700 text-white"
 						/>
-						<span className="text-sm text-muted-foreground">
-							{healthChecks.api.isLoading
-								? "Checking API..."
-								: "API " + (healthChecks.api.data ? "Connected" : "Disconnected")}
-						</span>
-					</div>
-					<div className="flex items-center gap-2">
-						<div
-							className={`h-2 w-2 rounded-full ${healthChecks.auth.data ? "bg-green-500" : "bg-red-500"}`}
+						<Button
+							render={<Link to="/login">Se Connecter</Link>}
+							size="lg"
+							variant="outline"
 						/>
-						<span className="text-sm text-muted-foreground">
-							{healthChecks.auth.isLoading
-								? "Checking Auth..."
-								: "Auth " + (healthChecks.auth.data ? "Connected" : "Disconnected")}
-						</span>
 					</div>
-				</section>
-			</div>
+				</div>
+			</section>
 		</div>
 	);
 }
