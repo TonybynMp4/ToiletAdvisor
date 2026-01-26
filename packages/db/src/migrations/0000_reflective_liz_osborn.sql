@@ -1,9 +1,3 @@
-CREATE TABLE `bookmark` (
-	`userId` varchar(128) NOT NULL,
-	`postId` varchar(128) NOT NULL,
-	CONSTRAINT `bookmark_userId_postId_pk` PRIMARY KEY(`userId`,`postId`)
-);
---> statement-breakpoint
 CREATE TABLE `comment` (
 	`id` varchar(128) NOT NULL,
 	`userId` varchar(128) NOT NULL,
@@ -53,8 +47,6 @@ CREATE TABLE `user` (
 	CONSTRAINT `user_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
-ALTER TABLE `bookmark` ADD CONSTRAINT `bookmark_userId_user_id_fk` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE `bookmark` ADD CONSTRAINT `bookmark_postId_post_id_fk` FOREIGN KEY (`postId`) REFERENCES `post`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `comment` ADD CONSTRAINT `comment_userId_user_id_fk` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `comment` ADD CONSTRAINT `comment_postId_post_id_fk` FOREIGN KEY (`postId`) REFERENCES `post`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `post_media` ADD CONSTRAINT `post_media_postId_post_id_fk` FOREIGN KEY (`postId`) REFERENCES `post`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint

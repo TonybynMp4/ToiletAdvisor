@@ -60,6 +60,7 @@ Le token d'API Uploadthing est requis pour l'upload de fichiers, sinon le reste 
     ```
 5. **Accéder à l'application:**
     - Frontend: `http://localhost:5173`
+		- (ça peut prendre un peut de temps / quelques refresh le temps que React Router compile les routes & les dependances, promis c'est pas cassé)
     - DB: `localhost:3307` (en utilisant les identifiants de votre fichier `.env`)
 
 ## Structure du Projet
